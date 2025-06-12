@@ -13,7 +13,7 @@ or clone, build and run the [L4 IDE](https://github.com/smucclaw/l4-ide) and run
 ## L4 - Rules-as-code
 
 L4 is an open-source programming language designed by [Legalese](https://legalese.com) to author better
-contracts, regulation and other rules so that humans and computers can read and evaluate them.
+contracts, regulation and other rules so that both humans and computers can read and evaluate them.
 
 - L4 online-editor:   https://jl4.legalese.com
 - L4 documentation:   https://l4.legalese.com
