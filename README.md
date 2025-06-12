@@ -1,7 +1,7 @@
 # l4-promissory-note
 
 A simple promissory note/debt contract written in L4 to demonstrate the capabilities of the L4 DSL.
-It contains lots of comments explaining L4 and the concepts implemented. The PDF shows what a contract like this
+It contains lots of comments explaining L4 and the concepts implemented. The reference PDF shows what a contract like this
 might look like in real-life.
 
 Playing with the tests is a great way to get started tinkering with the language.
