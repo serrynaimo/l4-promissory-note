@@ -13,7 +13,7 @@ contracts, regulation and other rules so that humans and computers can read and 
 - L4 documentation:   https://l4.legalese.com
 - L4 IDE:             https://github.com/smucclaw/l4-ide
 
-Translate your own contracts or regulation into L4 and share it with [us](thomas@legalese.com) and we'll link it!
+Translate your own contracts or regulation into L4 and share it with [us](mailto:thomas@legalese.com) and we'll link it!
 
 
 ## License
