@@ -1,0 +1,30 @@
+IMPORT promissory_note
+
+
+§ `Promissory Note Tests`
+
+
+#EVAL `Total Interest Amount`
+
+#EVAL `Total Repayment Amount`
+
+#EVAL `Monthly Interest Rate`
+
+#EVAL `Monthly Installment Amount`
+
+#TRACE `Payment Obligations` `Total Repayment Amount` AT 0 WITH
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 29
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 59
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 89
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 119
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 149
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 179
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 209
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 239
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 269
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 299
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 329
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 359
+
+#TRACE `Payment Obligations` `Total Repayment Amount` AT 0 WITH
+    PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 59

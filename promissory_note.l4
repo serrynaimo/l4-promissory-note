@@ -1,0 +1,156 @@
+IMPORT promissory_prelude
+
+§ `Promissory Note`
+
+-- The actual contract with example parties and terms.
+
+
+§§ `Basic Definitions`
+
+`Note Date` MEANS  "4 February 2024"
+
+`Principal Amount` MEANS USD 25000
+
+`Interest Rate Per Annum` MEANS 15%
+
+`Security Collateral` MEANS NOTHING
+
+`Monthly Installments` MEANS 12
+
+`Default After Days Not Paid Beyond Due` MEANS 30
+
+`Late Payment Penalty` MEANS Penalty WITH
+                                `Interest Rate`     IS 5%
+                                `Grace Period Days` IS 10
+
+`Governing Law` MEANS "The laws of The Republic of Singapore"
+
+
+§§ `Parties`
+
+`The Borrower` MEANS
+  `Commercial Borrower` OF
+    Company WITH
+      `Name`           IS "Jane Dough Pte Ltd"
+      `Address`        IS "42 Jane Doe Rd #04-20, Singapore 420000"
+      `Jurisdiction`   IS "Singapore"
+      `Company Number` IS "UEN 200424242N"
+      `Account`        IS `Bank Account` WITH
+                              `Bank Name`      IS "DBS Bank Ltd"
+                              `Account Name`   IS "Jane Dough Pte Ltd"
+                              `Account Number` IS "242-242424-9"
+                              `SWIFT`          IS "DBSSSGSG"
+
+`The Lender` MEANS
+  `Individual Lender` OF
+    `Natural Person` WITH
+      `Name`          IS "John Doe"
+      `Address`       IS "42 The Lender Rd, Singapore 424242"
+      `Jurisdiction`  IS "Singapore"
+      `ID Number`     IS "G5301960D"
+      `Account`       IS `Bank Account` WITH
+                              `Bank Name`      IS "DBS Bank Ltd"
+                              `Account Name`   IS "The Lender"
+                              `Account Number` IS "120-643240-1"
+                              `SWIFT`          IS "DBSSSGSG"
+
+
+§§ `Repayment Terms`
+
+`Monthly Interest Rate` MEANS
+    `Interest Rate Per Annum` DIVIDED BY 12
+
+`Monthly Installment Amount` MEANS
+    Money WITH
+        Currency  IS `Principal Amount`'s Currency
+        Value     IS `Principal Amount`'s Value
+                        TIMES (`Monthly Interest Rate` TIMES `Compound Factor`)
+                            DIVIDED BY (`Compound Factor` MINUS 1)
+    WHERE
+        `Compound Factor` MEANS
+            `Base to the power of`
+                (1 PLUS `Monthly Interest Rate`)
+                `Monthly Installments`
+
+`Total Repayment Amount` MEANS
+    Money WITH
+        Currency  IS `Principal Amount`'s Currency
+        Value     IS `Monthly Installment Amount`'s Value TIMES `Monthly Installments`
+
+`Total Interest Amount` MEANS
+    Money WITH
+        Currency  IS `Principal Amount`'s Currency
+        Value     IS `Total Repayment Amount`'s Value MINUS `Principal Amount`'s Value
+
+GIVEN `Outstanding Payment Amount` IS A Money
+`Payment Obligations` MEANS
+    IF `Outstanding Payment Amount`'s Value GREATER THAN 0
+        THEN  PARTY   `The Borrower`
+              MUST    `pay monthly installment to`
+                          `The Lender`
+                          `Amount Transferred` PROVIDED
+                             `is money at least equal within error`
+                                `Amount Transferred`
+                                (`Next Payment Due`'s Amount)
+              WITHIN  `Next Payment Due Date`
+              HENCE   `Payment Obligations`
+                          (Money WITH
+                              Currency  IS `Monthly Installment Amount`'s Currency
+                              Value     IS `Outstanding Payment Amount`'s Value
+                                                MINUS `Amount Transferred`'s Value)
+              LEST     PARTY   `The Borrower`
+                       MUST    `pay monthly installment to`
+                                  `The Lender`
+                                  `Amount Transferred` PROVIDED
+                                      `is money at least equal within error`
+                                          `Amount Transferred`
+                                          `Next Payment Due Amount With Penalty`
+                       WITHIN  `Default After Days Beyond Commencement`
+                       LEST    PARTY  `The Borrower`
+                               MUST   `pay monthly installment to`
+                                          `The Lender`
+                                          `Amount Transferred` PROVIDED
+                                              `is money at least equal within error`
+                                                  `Amount Transferred`
+                                                  `All Outstanding Debts`
+        ELSE  FULFILLED
+      
+
+    WHERE
+        `Installments Covered Since Commencement` MEANS
+            (`Total Repayment Amount`'s Value
+                MINUS `Outstanding Payment Amount`'s Value)
+                    DIVIDED BY `Monthly Installment Amount`'s Value
+
+        `Next Payment Due` MEANS
+            Payment WITH
+                Amount IS
+                    Money WITH
+                        Currency  IS `Monthly Installment Amount`'s Currency
+                        Value     IS `The lesser of`
+                                         (`Monthly Installment Amount`'s Value)
+                                         (`Outstanding Payment Amount`'s Value)
+                `Days Beyond Commencement` IS
+                    (`Installments Covered Since Commencement` PLUS 1) TIMES 30
+
+        `Next Payment Due Date` MEANS
+            `Next Payment Due`'s `Days Beyond Commencement`
+               PLUS `Late Payment Penalty`'s `Grace Period Days`
+
+        `Next Payment Due Amount With Penalty` MEANS
+            Money WITH
+                Currency  IS `Next Payment Due`'s Amount's Currency
+                Value     IS `Next Payment Due`'s Amount's Value
+                                 PLUS `Next Payment Due`'s Amount's Value
+                                      TIMES `Late Payment Penalty`'s `Interest Rate`
+
+        `Default After Days Beyond Commencement` MEANS
+            `Next Payment Due`'s `Days Beyond Commencement`
+                PLUS `Default After Days Not Paid Beyond Due`
+
+        `All Outstanding Debts` MEANS
+            Money WITH
+                Currency  IS `Next Payment Due`'s Amount's Currency
+                Value     IS `Outstanding Payment Amount`'s Value 
+                                 PLUS `Next Payment Due Amount With Penalty`'s Value
+                                    MINUS `Next Payment Due`'s Amount's Value

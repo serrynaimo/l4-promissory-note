@@ -1,0 +1,116 @@
+§ `Promissory Prelude`
+
+-- This file contains definitions and helper functions that are used in the note
+-- to help destructure more complex types and relationships or make the note
+-- more readable for humans.
+
+
+§§ `Type Definitions`
+
+ASSUME NaN IS A NUMBER                      -- JS coders rejoice :D
+
+ASSUME NOTHING IS A STRING
+
+DECLARE Money
+    HAS Currency            IS A STRING
+        Value               IS A NUMBER
+
+DECLARE Company
+    HAS `Name`              IS A STRING
+        `Address`           IS A STRING
+        `Jurisdiction`      IS A STRING
+        `Company Number`    IS A STRING
+        `Account`           IS A `Bank Account`
+
+DECLARE `Natural Person`
+    HAS `Name`              IS A STRING
+        `Address`           IS A STRING
+        `Jurisdiction`      IS A STRING
+        `ID Number`         IS A STRING
+        `Account`           IS A `Bank Account`
+
+DECLARE Borrower IS ONE OF
+   `Individual Borrower`
+        HAS Individual      IS A `Natural Person`
+   `Commercial Borrower`
+        HAS Entity          IS A Company
+
+DECLARE Lender IS ONE OF
+   `Individual Lender`
+        HAS Individual      IS A `Natural Person`
+   `Commercial Lender`
+        HAS Entity          IS A Company
+
+DECLARE `Bank Account`
+    HAS `Bank Name`         IS A STRING
+        `Account Name`      IS A STRING
+        `Account Number`    IS A STRING
+        `SWIFT`             IS A STRING
+
+DECLARE Payment
+    HAS Amount                       IS A Money
+        `Days Beyond Commencement`   IS A NUMBER
+
+DECLARE Penalty
+    HAS `Interest Rate`     IS A NUMBER
+        `Grace Period Days` IS A NUMBER
+
+DECLARE `pay monthly installment to`
+    HAS Recipient           IS A Lender
+        Amount              IS A Money
+
+
+§§ `Useful Functions`
+
+GIVEN a IS A NUMBER
+      b IS A NUMBER
+`The lesser of` MEANS
+    IF a GREATER THAN b
+        THEN b
+        ELSE a
+
+GIVEN a IS A NUMBER
+      b IS A NUMBER
+`The greater of` MEANS
+    IF a GREATER THAN b
+        THEN a
+        ELSE b
+
+GIVEN base  IS A NUMBER
+      exp   IS A NUMBER
+`Base to the power of` MEANS
+    IF      exp EQUALS 0
+    THEN    1
+    ELSE    IF      base EQUALS 0
+            THEN    IF      exp LESS THAN 0
+                    THEN    NaN
+                    ELSE    0
+            ELSE    IF      exp EQUALS 1
+                    THEN    base
+                    ELSE    IF      exp GREATER THAN 0
+                            THEN    base TIMES `Base to the power of` base (exp MINUS 1)
+                            ELSE    1 DIVIDED BY `Base to the power of` base (0 MINUS exp)
+
+GIVEN a IS A Money
+      b IS A Money
+`is money at least equal within error` MEANS
+    a's Currency EQUALS b's Currency
+        AND a's Value AT LEAST (b's Value MINUS 0.05)
+
+GIVEN a IS A NUMBER
+USD MEANS
+   Money WITH
+      Currency IS "USD"
+      Value    IS a
+
+GIVEN a IS A NUMBER
+EUR MEANS
+   Money WITH
+      Currency IS "EUR"
+      Value    IS a
+
+GIVEN a IS A NUMBER
+SGD MEANS
+   Money WITH
+      Currency IS "SGD"
+      Value    IS a
