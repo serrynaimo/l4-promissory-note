@@ -1,16 +1,23 @@
 IMPORT promissory_note
 
-
 § `Promissory Note Tests`
 
+-- This file holds some evaluations against the promissory_note.l4
+-- Technically these test don't need to be in a separate file, but putting them into the note file feels like scribbling onto your 
+-- perfectly formatted, printed and signed note agreement to check how the terms actually work out... just a little wrong. :)
 
-#EVAL `Total Interest Amount`
 
-#EVAL `Total Repayment Amount`
+#EVAL `Total Interest Amount` -- Hover the blue scribbled #EVAL to see what they return. This one should be [Money OF "USD", 2077.49370354708]
 
-#EVAL `Monthly Interest Rate`
+#EVAL `Total Repayment Amount` -- [Money OF "USD", 27077.49370354708]
 
-#EVAL `Monthly Installment Amount`
+#EVAL `Monthly Interest Rate` -- [0.0125]
+
+#EVAL `Monthly Installment Amount` -- [Money OF "USD", 2256.4578086289234]
+
+
+-- The following #TRACE runs the `Payment Obligation` function that returns the state of the current contract
+-- after a set of actions have been completed at a certain amount of days.
 
 #TRACE `Payment Obligations` `Total Repayment Amount` AT 0 WITH
     PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 29
@@ -26,5 +33,19 @@ IMPORT promissory_note
     PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 329
     PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 359
 
+-- The #TRACE above is the happy case. Borrower pays everything on time, hence the contract is [FULFILLED]
+
 #TRACE `Payment Obligations` `Total Repayment Amount` AT 0 WITH
     PARTY `The Borrower` DOES `pay monthly installment to` `The Lender` (USD 2256.46) AT 59
+
+-- In this last #TRACE you see the state after just one event where Borrower pays once and late.
+-- The #TRACE returns the next obligation definition:
+--
+-- PARTY `The Borrower`
+-- MUST `pay monthly installment to` EXACTLY `The Lender`
+--                                    `Amount Transferred` PROVIDED `is money at least equal within error` OF `Amount Transferred`, `Next Payment Due Amount With Penalty`
+-- WITHIN `Default After Days Beyond Commencement`
+-- HENCE FULFILLED
+-- LEST PARTY `The Borrower`
+-- MUST `pay monthly installment to` EXACTLY `The Lender`
+--                                   `Amount Transferred` PROVIDED `is money at least equal within error` OF `Amount Transferred`, `All Outstanding Debts`

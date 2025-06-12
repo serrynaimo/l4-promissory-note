@@ -2,7 +2,7 @@
 
 -- This file contains definitions and helper functions that are used in the note
 -- to help destructure more complex types and relationships or make the note
--- more readable for humans.
+-- use syntax that is more readable for humans.
 
 
 §§ `Type Definitions`
@@ -11,16 +11,16 @@ ASSUME NaN IS A NUMBER                      -- JS coders rejoice :D
 
 ASSUME NOTHING IS A STRING
 
-DECLARE Money
-    HAS Currency            IS A STRING
-        Value               IS A NUMBER
+DECLARE Money                               -- Defining a Money Type might actually only be helpful for multi-currency constracts.
+    HAS Currency            IS A STRING     -- In this case it is probably too much detail and it could've been solved easier by
+        Value               IS A NUMBER     -- just specifying a variable that declares all monetary amounts in this note to be USD
 
 DECLARE Company
     HAS `Name`              IS A STRING
         `Address`           IS A STRING
         `Jurisdiction`      IS A STRING
         `Company Number`    IS A STRING
-        `Account`           IS A `Bank Account`
+        `Account`           IS A `Bank Account` -- Example of nested objects
 
 DECLARE `Natural Person`
     HAS `Name`              IS A STRING
@@ -29,8 +29,8 @@ DECLARE `Natural Person`
         `ID Number`         IS A STRING
         `Account`           IS A `Bank Account`
 
-DECLARE Borrower IS ONE OF
-   `Individual Borrower`
+DECLARE Borrower IS ONE OF                  -- IS ONE OF can be useful to define types that are alike sometimes,
+   `Individual Borrower`                    -- but differ in some detailed terms later
         HAS Individual      IS A `Natural Person`
    `Commercial Borrower`
         HAS Entity          IS A Company
@@ -47,7 +47,7 @@ DECLARE `Bank Account`
         `Account Number`    IS A STRING
         `SWIFT`             IS A STRING
 
-DECLARE Payment
+DECLARE Payment                              -- A payment in this note has an expected payment due date.
     HAS Amount                       IS A Money
         `Days Beyond Commencement`   IS A NUMBER
 
@@ -55,16 +55,16 @@ DECLARE Penalty
     HAS `Interest Rate`     IS A NUMBER
         `Grace Period Days` IS A NUMBER
 
-DECLARE `pay monthly installment to`
-    HAS Recipient           IS A Lender
-        Amount              IS A Money
+DECLARE `pay monthly installment to`        -- It's useful to have variables that define actions as part of
+    HAS Recipient           IS A Lender     -- obligations to contain verbs and start lower case. It's not a
+        Amount              IS A Money      -- hard language requirement, but good practice.
 
 
 §§ `Useful Functions`
 
-GIVEN a IS A NUMBER
-      b IS A NUMBER
-`The lesser of` MEANS
+GIVEN a IS A NUMBER                         -- At some point in the future, there'll probably be a bunch of libraries
+      b IS A NUMBER                         -- With all kinds of helper functions like this that can be seen as generally
+`The lesser of` MEANS                       -- accepted definitions of phrases or terms
     IF a GREATER THAN b
         THEN b
         ELSE a
@@ -76,8 +76,8 @@ GIVEN a IS A NUMBER
         THEN a
         ELSE b
 
-GIVEN base  IS A NUMBER
-      exp   IS A NUMBER
+GIVEN base  IS A NUMBER                     -- One day L4 will have native support for power and root functions and much
+      exp   IS A NUMBER                     -- more math, I'm sure ...
 `Base to the power of` MEANS
     IF      exp EQUALS 0
     THEN    1
@@ -91,15 +91,15 @@ GIVEN base  IS A NUMBER
                             THEN    base TIMES `Base to the power of` base (exp MINUS 1)
                             ELSE    1 DIVIDED BY `Base to the power of` base (0 MINUS exp)
 
-GIVEN a IS A Money
-      b IS A Money
-`is money at least equal within error` MEANS
+GIVEN a IS A Money                           -- Software comparisons are really hard. In reality a Lender would not really care
+      b IS A Money                           -- if a payment is a few cents short. This can even happen due to rounding errors
+`is money at least equal within error` MEANS -- and oddities in computer math alone.
     a's Currency EQUALS b's Currency
         AND a's Value AT LEAST (b's Value MINUS 0.05)
 
-GIVEN a IS A NUMBER
-USD MEANS
-   Money WITH
+GIVEN a IS A NUMBER                         -- This function just enables more readable writing of Money amounts. e.g. USD 2500
+USD MEANS                                   -- It looks much cleaner in the note and in the tests instead of always having to write
+   Money WITH                               -- Money WITH ...
       Currency IS "USD"
       Value    IS a
 
