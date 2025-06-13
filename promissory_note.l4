@@ -1,3 +1,4 @@
+IMPORT daydate
 IMPORT promissory_prelude
 
 § `Promissory Note`
@@ -8,7 +9,7 @@ IMPORT promissory_prelude
 
 §§ `Basic Definitions`
 
-`Note Date` MEANS  "4 February 2024"                        -- L4 doesn't have date handling at the time of writing.
+`Note Date` MEANS February 4 2024                           -- using the daydate function February to get a number of days
 
 `Principal Amount` MEANS USD 25000                          -- Using the USD helper function to make it look super neat
 
@@ -61,8 +62,8 @@ IMPORT promissory_prelude
 
 §§ `Repayment Terms`
 
-`Monthly Interest Rate` MEANS                               -- Yes, math!
-    `Interest Rate Per Annum` DIVIDED BY 12
+`Monthly Interest Rate` MEANS                               -- How to do simple math in a function
+    `Interest Rate Per Annum` DIVIDED BY `Months in a year` -- `Months in a year` is 12 (import from daydate)
 
 `Monthly Installment Amount` MEANS                          -- Here we implement a basic Loan Amortization Formula or PMT
     Money WITH
@@ -133,11 +134,10 @@ GIVEN `Outstanding Payment Amount` IS A Money               -- This function imp
                                          (`Monthly Installment Amount`'s Value)
                                          (`Outstanding Payment Amount`'s Value)
                 `Days Beyond Commencement` IS              -- Here we calculate the next due date based on how many installments worth have already been paid
-                    (`Installments Covered Since Commencement` PLUS 1) TIMES 30 -- Ideally we would have a calendar month function instead of 30 days that calculates the days
-                                                                                -- based on the actual payment dates' month (28, 29, 30 or 31)
+                    (`Installments Covered Since Commencement` PLUS 1) TIMES `Days in a month` -- `Days in a month` is a convenience number from the daydate import. 30.4375
         `Next Payment Due Date` MEANS                      -- It's curious that the ACTUAL due date is the due date + grace period.
-            `Next Payment Due`'s `Days Beyond Commencement`
-               PLUS `Late Payment Penalty`'s `Grace Period Days`
+            CEILING (`Next Payment Due`'s `Days Beyond Commencement`) -- We round this up to not be too anal in the lenders favor
+                PLUS `Late Payment Penalty`'s `Grace Period Days`
 
         `Next Payment Due Amount With Penalty` MEANS       -- Adding the penalty interest rate to the payment amount
             Money WITH
@@ -147,7 +147,7 @@ GIVEN `Outstanding Payment Amount` IS A Money               -- This function imp
                                       TIMES `Late Payment Penalty`'s `Interest Rate`
 
         `Default After Days Beyond Commencement` MEANS      -- Calculating the day at which payment default kicks in
-            `Next Payment Due`'s `Days Beyond Commencement` -- I hope these example show the importance of great variable naming
+            CEILING (`Next Payment Due`'s `Days Beyond Commencement`) -- I hope this example shows the importance of great variable naming
                 PLUS `Default After Days Not Paid Beyond Due`
 
         `All Outstanding Debts` MEANS                       -- This is technically only considering one penalty application of the missed payment

@@ -1,0 +1,176 @@
+§ `Day & Date Definitions and Helpers`
+
+-- Some basic functions to enable math with dates and days
+
+GIVEN day   IS A NUMBER
+      month IS A NUMBER
+      year  IS A NUMBER
+`Days since 1970` MEANS
+    `Year in days since 1970` year
+        PLUS `Month in days` (month MINUS 1) year
+            PLUS day
+
+GIVEN year IS A NUMBER
+`Year in days since 1970` MEANS
+    (y TIMES 365)
+        PLUS FLOOR ((y MINUS 3) DIVIDED BY 4)
+    WHERE
+        y MEANS FLOOR year
+            MINUS 1970
+
+GIVEN month IS A NUMBER
+      year IS A NUMBER
+`Month in days` MEANS
+    IF    month LESS THAN 1
+    THEN  0
+    ELSE  `Days in month` month year
+              PLUS `Month in days` (month MINUS 1) year
+
+GIVEN month IS A NUMBER
+      year  IS A NUMBER
+`Days in month` MEANS
+    IF       m EQUALS 3   -- April
+          OR m EQUALS 5   -- June
+          OR m EQUALS 8   -- September
+          OR m EQUALS 10  -- November
+    THEN  30
+    ELSE  IF    m EQUALS 1
+          THEN  IF    y MODULO 4 EQUALS 0
+                THEN  29  -- leap year
+                ELSE  28
+          ELSE  31
+    WHERE
+        m MEANS (FLOOR (month MINUS 1))
+                    MINUS (FLOOR ((month MINUS 1)
+                        DIVIDED BY `Months in a year`))
+                            TIMES `Months in a year`
+        y MEANS FLOOR year
+                    PLUS FLOOR (month DIVIDED BY `Months in a year`)
+
+GIVEN days  IS A NUMBER
+`Weekday of` MEANS
+    days MODULO `Days in a week`
+
+GIVEN month  IS A NUMBER
+      year   IS A NUMBER
+`Weekday of 1st day of month` MEANS
+    `Weekday of`
+        (`Days since 1970` 1 month year)
+
+GIVEN year  IS A NUMBER
+`Weekday of 1st day of year` MEANS
+    `Weekday of` ((`Year in days since 1970` year) PLUS 1)
+
+GIVEN week  IS A NUMBER
+      year  IS A NUMBER
+`Week` MEANS
+    (`Year in days since 1970` year) PLUS 1
+        PLUS Monday MINUS (`Weekday of 1st day of year` year)
+            PLUS ((week MINUS 1) TIMES `Days in a week`)
+
+GIVEN days  IS A NUMBER
+`is Weekend` MEANS
+        w EQUALS Saturday
+    OR  w EQUALS Sunday
+    WHERE
+        w MEANS `Weekday of` days
+
+GIVEN days  IS A NUMBER
+`is Weekday` MEANS
+    NOT `is Weekend` days
+
+
+-- Some testing
+#EVAL `Year in days since 1970` 2022                      -- 18992
+#EVAL `Year in days since 1970` 2023                      -- 19357
+#EVAL `Year in days since 1970` 2024                      -- 19722
+#EVAL `Year in days since 1970` 2025                      -- 20088
+#EVAL Jun 13 2025                                         -- 20252
+#EVAL `Weekday of` (Jun 13 2025) EQUALS Friday            -- TRUE
+#EVAL `Days in month` 2 2024                              -- 29
+#EVAL Week 1 2024 EQUALS January 1 2024                   -- TRUE
+#EVAL Week 1 2025 EQUALS December 30 2024                 -- TRUE
+#EVAL `Weekday of 1st day of year` 2024 EQUALS Monday     -- TRUE
+#EVAL `Weekday of 1st day of year` 2022 EQUALS Saturday   -- TRUE
+#EVAL January 1 2024                                      -- 19723
+#EVAL Week 24 2025 EQUALS June 9 2025                     -- TRUE
+#EVAL `Weekday of` (Week 8 2017) EQUALS Monday            -- TRUE
+#EVAL June 9 2025                                         -- 20248
+#EVAL `Days in a month`                                   -- 30.4375
+#EVAL `is Weekday` (June 8 2025)                          -- FALSE
+#EVAL `is Weekend` (`Weekday of 1st day of month` 2 2025) -- TRUE
+
+-- Some helper variables
+`Months in a year` MEANS 12
+`Days in a year` MEANS 365.25
+`Days in a month` MEANS `Days in a year` DIVIDED BY `Months in a year`
+`Days in a week` MEANS 7
+
+`Monday` AKA `Mon` MEANS 4
+`Tuesday` AKA `Tue` MEANS 5
+`Wednesday` AKA `Wed` MEANS 6
+`Thursday` AKA `Thu` MEANS 0
+`Friday` AKA `Fri` MEANS 1
+`Saturday` AKA `Sat` MEANS 2
+`Sunday` AKA `Sun` MEANS 3
+
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`January` AKA `Jan` MEANS
+    `Days since 1970` day 1 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`February` AKA `Feb` MEANS
+    `Days since 1970` day 2 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`March` AKA `Mar` MEANS
+    `Days since 1970` day 3 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`April` AKA `Apr` MEANS
+    `Days since 1970` day 4 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`May` MEANS
+    `Days since 1970` day 5 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`June` AKA `Jun` MEANS
+    `Days since 1970` day 6 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`July` AKA `Jul` MEANS
+    `Days since 1970` day 7 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`August` AKA `Aug` MEANS
+    `Days since 1970` day 8 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`September` AKA `Sep` MEANS
+    `Days since 1970` day 9 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`October` AKA `Oct` MEANS
+    `Days since 1970` day 10 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`November` AKA `Nov` MEANS
+    `Days since 1970` day 11 year
+
+GIVEN day   IS A NUMBER
+      year  IS A NUMBER
+`December` AKA `Dec` MEANS
+    `Days since 1970` day 12 year
