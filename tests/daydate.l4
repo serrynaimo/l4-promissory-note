@@ -1,0 +1,22 @@
+IMPORT daydate
+
+§ `Day & Date Definitions and Helpers Tests`
+
+#EVAL `Year in days since 1970` 2022                      -- 18992
+#EVAL `Year in days since 1970` 2023                      -- 19357
+#EVAL `Year in days since 1970` 2024                      -- 19722
+#EVAL `Year in days since 1970` 2025                      -- 20088
+#EVAL Jun 13 2025                                         -- 20252
+#EVAL `Weekday of` (Jun 13 2025) EQUALS Friday            -- TRUE
+#EVAL `Days in month` 2 2024                              -- 29
+#EVAL Week 1 2024 EQUALS January 1 2024                   -- TRUE
+#EVAL Week 1 2025 EQUALS December 30 2024                 -- TRUE
+#EVAL `Weekday of 1st day of year` 2024 EQUALS Monday     -- TRUE
+#EVAL `Weekday of 1st day of year` 2022 EQUALS Saturday   -- TRUE
+#EVAL January 1 2024                                      -- 19723
+#EVAL Week 24 2025 EQUALS June 9 2025                     -- TRUE
+#EVAL `Weekday of` (Week 8 2017) EQUALS Monday            -- TRUE
+#EVAL June 9 2025                                         -- 20248
+#EVAL `Days in a month`                                   -- 30.4375
+#EVAL `is Weekday` (June 8 2025)                          -- FALSE
+#EVAL `is Weekend` (`Weekday of 1st day of month` 2 2025) -- TRUE
