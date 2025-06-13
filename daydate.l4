@@ -1,13 +1,15 @@
 § `Day & Date Definitions and Helpers`
 
--- Some basic functions to enable math with dates and days
+-- Some basic functions to enable math with dates and days following ISO 8601
+-- Functions return days since 1st January 1970, week begins on Monday
+-- Check the test/daydate.l4 file to see examples
 
 GIVEN day   IS A NUMBER
       month IS A NUMBER
       year  IS A NUMBER
 `Date` MEANS
     Month month year PLUS (day MINUS 1)
-    
+
 
 GIVEN year  IS A NUMBER
 `Year` MEANS
@@ -16,18 +18,24 @@ GIVEN year  IS A NUMBER
 GIVEN month IS A NUMBER
       year  IS A NUMBER
 `Month` MEANS
-    IF    m LESS THAN 1
-    THEN  1 PLUS (y TIMES 365)  -- Add the days within the years prior plus day one
-              PLUS FLOOR ((y MINUS 3) DIVIDED BY 4) -- consider leap years
-    ELSE  `Days in month` m year
-              PLUS Month m year -- Recursively add all days of months that year
+    IF    month LESS THAN 1
+    THEN  `add up month days` (m PLUS (`Months in a year` TIMES n)) (y MINUS n)
+    ELSE  `add up month days` m y
     WHERE
-        m MEANS
-            month MINUS 1
-        y MEANS
-            FLOOR year
-                MINUS 1970
-            
+        y MEANS FLOOR year MINUS 1968 -- using 1968 so that leap year calculations are aligned. It's divisble by 4.
+        m MEANS FLOOR month MINUS 1
+        n MEANS FLOOR (1 PLUS (m TIMES -1 DIVIDED BY `Months in a year`))
+
+        GIVEN rm IS A NUMBER
+              ry IS A NUMBER
+        `add up month days` MEANS
+            IF    rm LESS THAN 1
+            THEN  ((ry MINUS 2) TIMES 365) -- Add the days within the years prior with 2 years subtracted to get to 1970
+                      PLUS  FLOOR ((ry MINUS 1) DIVIDED BY 4)     -- consider leap years
+                      MINUS FLOOR ((ry MINUS 33) DIVIDED BY 100)
+                      PLUS  FLOOR ((ry MINUS 33) DIVIDED BY 400)
+            ELSE  `Days in month` rm ry
+                      PLUS `add up month days` (rm MINUS 1) ry -- Recursively add all days of months that year
 
 GIVEN month IS A NUMBER
       year  IS A NUMBER
@@ -43,12 +51,18 @@ GIVEN month IS A NUMBER
                 ELSE  28
           ELSE  31
     WHERE
-        m MEANS 1 PLUS (FLOOR (month MINUS 1))
+        m MEANS 1 PLUS (FLOOR month MINUS 1)
                     MINUS (FLOOR ((month MINUS 1)
                         DIVIDED BY `Months in a year`))
                             TIMES `Months in a year`
         y MEANS FLOOR year
                     PLUS FLOOR (month DIVIDED BY `Months in a year`)
+
+GIVEN year  IS A NUMBER
+`Days in year` MEANS
+    IF   `is leap year` year
+    THEN 366
+    ELSE 365
 
 GIVEN days  IS A NUMBER
 `Weekday of` MEANS
@@ -71,21 +85,46 @@ GIVEN week  IS A NUMBER
         PLUS Monday MINUS (`Weekday of 1st day of year` year)
             PLUS ((week MINUS 1) TIMES `Days in a week`)
 
+GIVEN year  IS A NUMBER
+`is leap year` MEANS
+            y MODULO 4   EQUALS 0
+    AND NOT y MODULO 100 EQUALS 0
+    OR      y MODULO 400 EQUALS 0
+    WHERE
+      y MEANS FLOOR year
+
+GIVEN year  IS A NUMBER
+`Weeks in year` MEANS
+    IF        h EQUALS 5
+          OR (h EQUALS 4 AND `is leap year` year)
+    THEN  53
+    ELSE  52
+    WHERE
+        y MEANS FLOOR year MINUS 1
+        k MEANS y MODULO 100
+        j MEANS FLOOR (y DIVIDED BY 100)
+        h MEANS (37 PLUS k
+                    PLUS FLOOR (k DIVIDED BY 4)
+                    PLUS FLOOR (j DIVIDED BY 4)
+                    PLUS (5 TIMES j))
+                MODULO `Days in a week`
+
 GIVEN days  IS A NUMBER
-`is Weekend` MEANS
+`is weekend` MEANS
         w EQUALS Saturday
     OR  w EQUALS Sunday
     WHERE
-        w MEANS `Weekday of` days
+        d MEANS FLOOR days
+        w MEANS `Weekday of` d
 
 GIVEN days  IS A NUMBER
-`is Weekday` MEANS
-    NOT `is Weekend` days
+`is weekday` MEANS
+    NOT `is weekend` days
 
 
 -- Some helper variables
 `Months in a year` MEANS 12
-`Days in a year` MEANS 365.25
+`Days in a year` MEANS 365.2425
 `Days in a month` MEANS `Days in a year` DIVIDED BY `Months in a year`
 `Days in a week` MEANS 7
 
