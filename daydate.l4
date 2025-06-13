@@ -5,42 +5,45 @@
 GIVEN day   IS A NUMBER
       month IS A NUMBER
       year  IS A NUMBER
-`Days since 1970` MEANS
-    `Year in days since 1970` year
-        PLUS `Month in days` (month MINUS 1) year
-            PLUS day
+`Date` MEANS
+    Month month year PLUS (day MINUS 1)
+    
 
-GIVEN year IS A NUMBER
-`Year in days since 1970` MEANS
-    (y TIMES 365)
-        PLUS FLOOR ((y MINUS 3) DIVIDED BY 4)
-    WHERE
-        y MEANS FLOOR year
-            MINUS 1970
+GIVEN year  IS A NUMBER
+`Year` MEANS
+    Month 1 year
 
 GIVEN month IS A NUMBER
-      year IS A NUMBER
-`Month in days` MEANS
-    IF    month LESS THAN 1
-    THEN  0
-    ELSE  `Days in month` month year
-              PLUS `Month in days` (month MINUS 1) year
+      year  IS A NUMBER
+`Month` MEANS
+    IF    m LESS THAN 1
+    THEN  1 PLUS (y TIMES 365)  -- Add the days within the years prior plus day one
+              PLUS FLOOR ((y MINUS 3) DIVIDED BY 4) -- consider leap years
+    ELSE  `Days in month` m year
+              PLUS Month m year -- Recursively add all days of months that year
+    WHERE
+        m MEANS
+            month MINUS 1
+        y MEANS
+            FLOOR year
+                MINUS 1970
+            
 
 GIVEN month IS A NUMBER
       year  IS A NUMBER
 `Days in month` MEANS
-    IF       m EQUALS 3   -- April
-          OR m EQUALS 5   -- June
-          OR m EQUALS 8   -- September
-          OR m EQUALS 10  -- November
+    IF       m EQUALS 4   -- April
+          OR m EQUALS 6   -- June
+          OR m EQUALS 9   -- September
+          OR m EQUALS 11  -- November
     THEN  30
-    ELSE  IF    m EQUALS 1
+    ELSE  IF    m EQUALS 2
           THEN  IF    y MODULO 4 EQUALS 0
                 THEN  29  -- leap year
                 ELSE  28
           ELSE  31
     WHERE
-        m MEANS (FLOOR (month MINUS 1))
+        m MEANS 1 PLUS (FLOOR (month MINUS 1))
                     MINUS (FLOOR ((month MINUS 1)
                         DIVIDED BY `Months in a year`))
                             TIMES `Months in a year`
@@ -55,16 +58,16 @@ GIVEN month  IS A NUMBER
       year   IS A NUMBER
 `Weekday of 1st day of month` MEANS
     `Weekday of`
-        (`Days since 1970` 1 month year)
+        (Date 1 month year)
 
 GIVEN year  IS A NUMBER
 `Weekday of 1st day of year` MEANS
-    `Weekday of` ((`Year in days since 1970` year) PLUS 1)
+    `Weekday of` (Year year)
 
 GIVEN week  IS A NUMBER
       year  IS A NUMBER
 `Week` MEANS
-    (`Year in days since 1970` year) PLUS 1
+    Year year
         PLUS Monday MINUS (`Weekday of 1st day of year` year)
             PLUS ((week MINUS 1) TIMES `Days in a week`)
 
@@ -98,59 +101,59 @@ GIVEN days  IS A NUMBER
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `January` AKA `Jan` MEANS
-    `Days since 1970` day 1 year
+    Date day 1 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `February` AKA `Feb` MEANS
-    `Days since 1970` day 2 year
+    Date day 2 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `March` AKA `Mar` MEANS
-    `Days since 1970` day 3 year
+    Date day 3 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `April` AKA `Apr` MEANS
-    `Days since 1970` day 4 year
+    Date day 4 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `May` MEANS
-    `Days since 1970` day 5 year
+    Date day 5 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `June` AKA `Jun` MEANS
-    `Days since 1970` day 6 year
+    Date day 6 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `July` AKA `Jul` MEANS
-    `Days since 1970` day 7 year
+    Date day 7 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `August` AKA `Aug` MEANS
-    `Days since 1970` day 8 year
+    Date day 8 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `September` AKA `Sep` MEANS
-    `Days since 1970` day 9 year
+    Date day 9 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `October` AKA `Oct` MEANS
-    `Days since 1970` day 10 year
+    Date day 10 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `November` AKA `Nov` MEANS
-    `Days since 1970` day 11 year
+    Date day 11 year
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
 `December` AKA `Dec` MEANS
-    `Days since 1970` day 12 year
+    Date day 12 year

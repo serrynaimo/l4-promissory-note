@@ -2,10 +2,13 @@ IMPORT daydate
 
 § `Day & Date Definitions and Helpers Tests`
 
-#EVAL `Year in days since 1970` 2022                      -- 18992
-#EVAL `Year in days since 1970` 2023                      -- 19357
-#EVAL `Year in days since 1970` 2024                      -- 19722
-#EVAL `Year in days since 1970` 2025                      -- 20088
+#EVAL Year 2022                                           -- 18993 - 1st of the year 2022
+#EVAL Year 2023                                           -- 19358
+#EVAL Year 2024                                           -- 19723
+#EVAL Month 6 2025                                        -- 20240
+#EVAL Month 19 2025 EQUALS Date 1 7 2026                  -- TRUE
+#EVAL Date -10 1 2025 EQUALS Dec 21 2024                  -- TRUE
+#EVAL Year 2025 EQUALS Jan 1 2025                         -- 20089
 #EVAL Jun 13 2025                                         -- 20252
 #EVAL `Weekday of` (Jun 13 2025) EQUALS Friday            -- TRUE
 #EVAL `Days in month` 2 2024                              -- 29
