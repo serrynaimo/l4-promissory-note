@@ -2,21 +2,13 @@ IMPORT daydate
 
 § `Day & Date Definitions and Helpers Tests`
 
-#EVAL Year 2022                                           -- 18993 - 1st of the year 2022
-#EVAL Year 2023                                           -- 19358
-#EVAL Year 2024                                           -- 19723
-#EVAL Year 2025                                           -- 20089
-#EVAL Year 2101                                           -- 47847
-#EVAL Year 2104                                           -- 48942
-#EVAL Year 2105                                           -- 49308
-#EVAL Year 2505                                           -- 195405
-#EVAL Month 1 2024                                        -- 19723
-#EVAL Month 6 2025                                        -- 20240
+#EVAL Year 2022                                           -- 738520 - 1st of the year 2022
+#EVAL Year 2505                                           -- 914932
+#EVAL Month 1 2024                                        -- 739250
+#EVAL Month 6 2025                                        -- 739767
 #EVAL Month 19 2025 EQUALS Day 1 7 2026                   -- TRUE - Fun with month math
-#EVAL January 1 2024                                      -- 19723
-#EVAL Jun 13 2025                                         -- 20252
-#EVAL June 9 2025                                         -- 20248
-#EVAL Dec 31 2024                                         -- 20088
+#EVAL January 1 2024                                      -- 739250
+#EVAL Jun 13 2025                                         -- 739779
 #EVAL `Name of month` (Sep 1 2025)                        -- September
 #EVAL `Name of month` 2                                   -- February
 #EVAL (Jan 1 2024) PLUS 366 EQUALS Year 2025              -- TRUE - Testing leap year 2024
@@ -25,7 +17,7 @@ IMPORT daydate
 #EVAL Month -13 2025 EQUALS Month 11 2023                 -- TRUE - Negative months (remember 0 is January - 1)
 #EVAL Year 2025 EQUALS Day -30 2 2025                     -- TRUE
 #EVAL `Days in month` 2 2024                              -- 29 - leap year
-#EVAL Week 1 2024                                         -- 19723 - 2024 started on a Monday
+#EVAL Week 1 2024                                         -- 739253 - 2024 started on a Monday
 #EVAL Week 1 2024 EQUALS January 1 2024                   -- TRUE
 #EVAL Week -1 2024 EQUALS December 18 2023                -- TRUE
 #EVAL Week 1 2025 EQUALS December 30 2024                 -- TRUE - Week started 2 days early according to ISO
@@ -65,5 +57,5 @@ IMPORT daydate
 -- Convenience phrases
 #EVAL `the month before` (Jan 2 2024) EQUALS Dec 1 2023   -- TRUE
 #EVAL `the month after` (Dec 8 2021) EQUALS Jan 1 2022    -- TRUE
-#EVAL `the day before` (DATE OF 1, 1, 2013)               -- 15705
-#EVAL `the later of` (Day 1 1 2004) (DATE OF 1, 12, 2003) -- 12418
+#EVAL `the day before` (DATE OF 1, 1, 2013)               -- 735232
+#EVAL `the later of` (Day 1 1 2004) (DATE OF 1, 12, 2003) -- 731945

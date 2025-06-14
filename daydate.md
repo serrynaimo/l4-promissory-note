@@ -1,7 +1,7 @@
 # Day & Date Functions Reference
 
 Library with some basic functions to enable math with dates and days following ISO 8601.
-Functions return datestamps (Number of days since 1st January 1970).
+Functions return datestamps (Number of days since 1st January 0000).
 A week begins on Monday
 Check the test/daydate.l4 file to see examples or play around with it in our [online-editor](https://jl4.legalese.com/?id=70d47963-10c2-4237-81e5-dd683c1ef08b).
 
@@ -15,17 +15,17 @@ Check the test/daydate.l4 file to see examples or play around with it in our [on
 - `Days in a week`: 7
 
 ### Weekday Constants
-Following ISO standard with January 1, 1970 being a Thursday:
+Following ISO standard with January 1, 0000 being a Sunday:
 
 | Weekday | Alias | Value |
 |---------|-------|-------|
-| `Monday` | `Mon` | 4 |
-| `Tuesday` | `Tue` | 5 |
-| `Wednesday` | `Wed` | 6 |
-| `Thursday` | `Thu` | 0 |
-| `Friday` | `Fri` | 1 |
-| `Saturday` | `Sat` | 2 |
-| `Sunday` | `Sun` | 3 |
+| `Monday` | `Mon` | 1 |
+| `Tuesday` | `Tue` | 2 |
+| `Wednesday` | `Wed` | 3 |
+| `Thursday` | `Thu` | 4 |
+| `Friday` | `Fri` | 5 |
+| `Saturday` | `Sat` | 6 |
+| `Sunday` | `Sun` | 0 |
 
 
 ## Date Constructors

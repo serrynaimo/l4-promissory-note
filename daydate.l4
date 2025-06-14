@@ -1,7 +1,7 @@
 § `Day & Date Definitions and Helpers`
 
 -- Library with some basic functions to enable math with dates and days following ISO 8601
--- Functions return datestamps (Number of days since 1st January 1970).
+-- Functions return datestamps (Number of days since 1st January 0000).
 -- A week begins on Monday
 -- Check the test/daydate.l4 file to see examples
 
@@ -16,13 +16,13 @@
 `Days in a month` MEANS 30.436875 -- Average month
 `Days in a week` MEANS 7
 
-`Monday` AKA `Mon` MEANS 4
-`Tuesday` AKA `Tue` MEANS 5
-`Wednesday` AKA `Wed` MEANS 6
-`Thursday` AKA `Thu` MEANS 0   -- ISO standard. 1st of Jan 1970 was a Thursday
-`Friday` AKA `Fri` MEANS 1
-`Saturday` AKA `Sat` MEANS 2
-`Sunday` AKA `Sun` MEANS 3
+`Monday` AKA `Mon` MEANS 1
+`Tuesday` AKA `Tue` MEANS 2
+`Wednesday` AKA `Wed` MEANS 3
+`Thursday` AKA `Thu` MEANS 4   -- ISO standard. 1st of Jan 1970 was a Thursday I guess
+`Friday` AKA `Fri` MEANS 5
+`Saturday` AKA `Sat` MEANS 6
+`Sunday` AKA `Sun` MEANS 0
 
 
 
@@ -65,7 +65,7 @@ GIVETH A DATE
         month IS  m
         year  IS  y
     WHERE
-        d   MEANS FLOOR days PLUS `Years to days` 1970 PLUS 1
+        d   MEANS FLOOR days PLUS 1
         y   MEANS `Year of days` days
         dy  MEANS `Years to days` y
         m   MEANS `Month of days` 1 (d MINUS dy)
@@ -85,7 +85,7 @@ GIVETH A DATE
         `Year of days` MEANS
             cycle400's y PLUS cycle100's y PLUS cycle4's y PLUS z
             WHERE
-                x         MEANS FLOOR v PLUS (`Years to days` 1970)
+                x         MEANS FLOOR v
                 cycle400  MEANS cycle x 146097 400
                 cycle100  MEANS cycle (cycle400's r) 36524 100
                 cycle4    MEANS cycle (cycle100's r) 1461 4
@@ -136,19 +136,18 @@ GIVEN month IS A NUMBER
       year  IS A NUMBER
 GIVETH A NUMBER
 `Month` MEANS
-    r MINUS `Years to days` 1970
+    IF    month LESS THAN 1
+    THEN  `Years to days` y                 -- negative month handling
+              PLUS `Months since year start to days`
+                      (month PLUS (`Months in a year` TIMES n))
+                      y
+    ELSE  `Years to days` year
+              PLUS `Months since year start to days` month year
     WHERE
         m MEANS FLOOR month MINUS 1
         n MEANS FLOOR (1 MINUS (m DIVIDED BY `Months in a year`))
         y MEANS FLOOR year MINUS n
-        r MEANS
-            IF    month LESS THAN 1
-            THEN  `Years to days` y                 -- negative month handling
-                      PLUS `Months since year start to days`
-                              (month PLUS (`Months in a year` TIMES n))
-                              y
-            ELSE  `Years to days` year
-                      PLUS `Months since year start to days` month year
+            
 
 GIVEN date  IS A DATE
 GIVETH A NUMBER
@@ -158,7 +157,7 @@ GIVETH A NUMBER
 GIVEN week  IS A NUMBER
       year  IS A NUMBER
 GIVETH A NUMBER
-`Week` MEANS                    -- Returns the days since 1970 of the first day of that week
+`Week` MEANS
     Year year
         PLUS Monday MINUS (`Weekday of 1st day of year` year)
             PLUS ((w MINUS 1) TIMES `Days in a week`)
@@ -169,7 +168,7 @@ GIVETH A NUMBER
 
 
 §§ `datestamp Month Constructors`
--- Convenience functions for months so you can write: January 1 1970
+-- Convenience functions for months so you can write: January 1 1972
 
 GIVEN day   IS A NUMBER
       year  IS A NUMBER
@@ -365,7 +364,7 @@ GIVETH A NUMBER
 
 GIVEN days  IS A NUMBER
 GIVETH A NUMBER
-`Week` MEANS                     -- Returns the number of the week of these days since 1970
+`Week` MEANS 
     Week (`Days to date` days)
 
 GIVEN date  IS A DATE
@@ -595,7 +594,7 @@ GIVETH A NUMBER
 §§ `Stringify for months and weekdays`
 
 
-GIVEN date  IS A DATE         -- Days since 1970 for a day
+GIVEN date  IS A DATE 
 GIVETH A STRING
 `Name of month` MEANS
     `Name of month` (`Date to days` date)
