@@ -658,7 +658,7 @@ GIVETH A STRING
         d MEANS FLOOR days
         m MEANS IF    d GREATER THAN 0 AND d LESS THAN 13
                 THEN  d MINUS 1
-                ELSE  FLOOR ((`Days to date` d)'s month MINUS 1) MODULO `Months in a year`
+                ELSE  FLOOR ((`Days to date` d)'s month MINUS 1)
 
 GIVEN days   IS A NUMBER
 GIVETH A STRING
