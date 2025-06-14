@@ -296,7 +296,19 @@ Gets the date for the first day of NEXT month.
 - **Giveth**: NUMBER (datestamp)
 
 ### `the month before`
-Gets the date for the first day of PREVIOUS month.
+Gets the date for the first day of the PREVIOUS month.
+- **Given**: 
+  - `date`: NUMBER (datestamp) or DATE object
+- **Giveth**: NUMBER (datestamp)
+
+### `the year after`
+Gets the date for the first day of NEXT year.
+- **Given**: 
+  - `date`: NUMBER (datestamp) or DATE object
+- **Giveth**: NUMBER (datestamp)
+
+### `the year before`
+Gets the date for the first day of the PREVIOUS year.
 - **Given**: 
   - `date`: NUMBER (datestamp) or DATE object
 - **Giveth**: NUMBER (datestamp)

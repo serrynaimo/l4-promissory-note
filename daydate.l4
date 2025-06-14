@@ -515,7 +515,25 @@ GIVETH A NUMBER
 `the month before` MEANS
     Day 1 (date's month MINUS 1) (date's year)
 
+GIVEN days   IS A NUMBER
+GIVETH A NUMBER
+`the year after` MEANS
+    `the year after` (`Days to date` days)
 
+GIVEN date   IS A DATE
+GIVETH A NUMBER
+`the year after` MEANS
+    Day 1 1 (date's year PLUS 1)
+
+GIVEN days   IS A NUMBER
+GIVETH A NUMBER
+`the year before` MEANS
+    `the year before` (`Days to date` days)
+
+GIVEN date   IS A DATE
+GIVETH A NUMBER
+`the year before` MEANS
+    Day 1 1 (date's year MINUS 1)
 
 
 §§ `Comperators`
