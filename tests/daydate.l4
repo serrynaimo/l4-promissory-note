@@ -29,8 +29,9 @@ IMPORT daydate
 #EVAL `Name of weekday` (`Weekday of` (Date 12 6 2025))   -- Thursday
 #EVAL `Weekday of 1st day of year` 1970 EQUALS Thursday   -- TRUE
 #EVAL Week 24 2025 EQUALS June 9 2025                     -- TRUE
-#EVAL Week (Jun 9 2025)                                   -- 24
-#EVAL Week (Dec 30 2009)                                  -- 53
+#EVAL Date (Week (Date (June 17 2025)))                   -- DATE OF 16, 6, 2025
+#EVAL `Week of the year` (Jun 9 2025)                     -- 24
+#EVAL `Week of the year` (Dec 30 2009)                    -- 53
 #EVAL `Weekday of` (Week 8 2017) EQUALS Monday            -- TRUE
 #EVAL `is weekday` (June 8 2025)                          -- FALSE
 #EVAL `is weekend` (`Weekday of 1st day of month` 2 2025) -- TRUE
@@ -46,9 +47,9 @@ IMPORT daydate
 #EVAL `Weeks in year` 2032                                -- 53
 
 -- Object DATE testing
-#EVAL `Days to date` 19358                                -- DATE OF 1, 1, 2023
+#EVAL `Days to date` 738520                               -- DATE OF 1, 1, 2022
 #EVAL `Days to date` (January 1 2024)                     -- DATE OF 1, 1, 2024
-#EVAL `Days to date` 19722 EQUALS (DATE OF 31, 12, 2023)  -- TRUE
+#EVAL `Days to date` 739249 EQUALS (DATE OF 31, 12, 2023) -- TRUE
 #EVAL `Days to date` (Nov 30 2019)                        -- DATE OF 30, 11, 2019
 #EVAL `is leap year` (Date 8 2 2020)                      -- TRUE
 #EVAL Day (DATE OF 18, 2, 2025) EQUALS Feb 18 2025        -- TRUE

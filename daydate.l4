@@ -35,10 +35,6 @@ DECLARE DATE
         month IS A NUMBER
         year  IS A NUMBER
 
-DECLARE yearCycleResponse   -- Internal type ... can remove later
-    HAS y IS A NUMBER
-        r IS A NUMBER
-
 
 
 
@@ -49,17 +45,12 @@ GIVEN day   IS A NUMBER
       month IS A NUMBER
       year  IS A NUMBER
 GIVETH A DATE
-`Date` MEANS
+`Date` AKA `Days to date` MEANS
     `Days to date` (Day day month year)
 
 GIVEN days  IS A NUMBER
 GIVETH A DATE
-`Date` MEANS
-    `Days to date` days
-
-GIVEN days  IS A NUMBER
-GIVETH A DATE
-`Days to date` MEANS
+`Date` AKA `Days to date` MEANS
     DATE WITH
         day   IS  d MINUS dy MINUS dm
         month IS  m
@@ -83,44 +74,43 @@ GIVETH A DATE
         GIVEN v IS A NUMBER
         GIVETH A NUMBER
         `Year of days` MEANS
-            cycle400's y PLUS cycle100's y PLUS cycle4's y PLUS z
+            y400 PLUS y100 PLUS y4 PLUS z
             WHERE
-                x         MEANS FLOOR v
-                cycle400  MEANS cycle x 146097 400
-                cycle100  MEANS cycle (cycle400's r) 36524 100
-                cycle4    MEANS cycle (cycle100's r) 1461 4
-                z         MEANS FLOOR (cycle4's r DIVIDED BY 365)
-        
-        GIVEN v IS A NUMBER
-              p IS A NUMBER
-              c IS A NUMBER
-        GIVETH A yearCycleResponse
-        cycle MEANS
-            yearCycleResponse OF (FLOOR (v DIVIDED BY p) TIMES c), v MODULO p
-        
+                x     MEANS FLOOR v
+                y400  MEANS FLOOR (x DIVIDED BY 146097) TIMES 400
+                r400  MEANS x MODULO 146097
+                y100  MEANS FLOOR (r400 DIVIDED BY 36524) TIMES 100
+                r100  MEANS r400 MODULO 36524
+                y4    MEANS FLOOR (r100 DIVIDED BY 1461) TIMES 4
+                r4    MEANS r100 MODULO 1461
+                z     MEANS FLOOR (r4 DIVIDED BY 365)
+
+GIVEN date  IS A DATE
+GIVETH A DATE
+`Date` AKA `Days to date` MEANS date
 
 
 
-§§ `datestamp Constructors`
+
+§§ `Datestamp Constructors`
 
 
 GIVEN date  IS A DATE
 GIVETH A NUMBER
-`Date to days` MEANS
-    Month (date's month) (date's year)
-        PLUS (date's day MINUS 1)
+`Day` AKA `Date to days` MEANS
+    Day (date's month) (date's year) (date's day)
 
 GIVEN day   IS A NUMBER
       month IS A NUMBER
       year  IS A NUMBER
 GIVETH A NUMBER
-`Day` MEANS
+`Day` AKA `Date to days` MEANS
     Month month year PLUS (day MINUS 1)
 
-GIVEN date  IS A DATE
+GIVEN days  IS A NUMBER
 GIVETH A NUMBER
-`Day` MEANS
-    `Date to days` date
+`Day`AKA `Date to days` MEANS
+    days
 
 GIVEN year  IS A NUMBER
 GIVETH A NUMBER
@@ -148,6 +138,10 @@ GIVETH A NUMBER
         n MEANS FLOOR (1 MINUS (m DIVIDED BY `Months in a year`))
         y MEANS FLOOR year MINUS n
             
+GIVEN days  IS A NUMBER
+GIVETH A NUMBER
+`Month` MEANS
+    Month (`Days to date` days)
 
 GIVEN date  IS A DATE
 GIVETH A NUMBER
@@ -164,10 +158,23 @@ GIVETH A NUMBER
     WHERE
         w MEANS FLOOR week
 
+GIVEN days  IS A NUMBER
+GIVETH A NUMBER
+`Week` MEANS
+    IF   w EQUALS 0
+    THEN days MINUS (`Days in a week` MINUS 1)
+    ELSE days MINUS w PLUS 1
+    WHERE
+        w MEANS `Weekday of` days
+
+GIVEN date  IS A DATE
+GIVETH A NUMBER
+`Week` MEANS
+    Week (`Date to days` date)
 
 
 
-§§ `datestamp Month Constructors`
+§§ `Datestamp Month Constructors`
 -- Convenience functions for months so you can write: January 1 1972
 
 GIVEN day   IS A NUMBER
@@ -245,7 +252,7 @@ GIVETH A NUMBER
 
 
 
-§§ `datestamp Math Helpers`
+§§ `Datestamp Math Helpers`
 
 
 GIVEN month IS A NUMBER
@@ -258,6 +265,11 @@ GIVETH A NUMBER
               PLUS `Months since year start to days` m year -- Recursively add all days of months that year
     WHERE
         m MEANS FLOOR month MINUS 1
+
+GIVEN days  IS A NUMBER
+GIVETH A NUMBER
+`Months since year start to days` MEANS
+    `Months since year start to days` (`Days to date` days)
 
 GIVEN date  IS A DATE
 GIVETH A NUMBER
@@ -285,6 +297,11 @@ GIVETH A NUMBER
                             TIMES `Months in a year`
         y MEANS FLOOR year
                     PLUS FLOOR (month DIVIDED BY `Months in a year`)
+
+GIVEN days  IS A NUMBER
+GIVETH A NUMBER
+`Days in month` MEANS
+    `Days in month` (`Days to date` days)
 
 GIVEN date  IS A DATE
 GIVETH A NUMBER
@@ -341,6 +358,11 @@ GIVETH A NUMBER
     `Weekday of`
         (Day 1 month year)
 
+GIVEN days   IS A NUMBER
+GIVETH A NUMBER
+`Weekday of 1st day of month` MEANS
+    `Weekday of 1st day of month` (`Days to date` days)
+
 GIVEN date   IS A DATE
 GIVETH A NUMBER
 `Weekday of 1st day of month` MEANS
@@ -364,12 +386,12 @@ GIVETH A NUMBER
 
 GIVEN days  IS A NUMBER
 GIVETH A NUMBER
-`Week` MEANS 
-    Week (`Days to date` days)
+`Week of the year` MEANS 
+    `Week of the year` (`Days to date` days)
 
 GIVEN date  IS A DATE
 GIVETH A NUMBER
-`Week` MEANS                     -- Returns the number of the week of this date
+`Week of the year` MEANS                     -- Returns the number of the week of this date
     CEILING ((s PLUS w) DIVIDED BY `Days in a week`)
     WHERE
         s    MEANS `Months since year start to days` date
