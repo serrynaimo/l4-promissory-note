@@ -14,7 +14,7 @@ Check the test/daydate.l4 file to see examples or play around with it in our [on
 - `Days in a month`: 30.436875 (average month length)
 - `Days in a week`: 7
 
-### Weekday Constants
+### Month & Weekday Constants
 Following ISO standard with January 1, 0000 being a Sunday:
 
 | Weekday | Alias | Value |
@@ -26,6 +26,21 @@ Following ISO standard with January 1, 0000 being a Sunday:
 | `Friday` | `Fri` | 5 |
 | `Saturday` | `Sat` | 6 |
 | `Sunday` | `Sun` | 0 |
+
+| Month | Alias | Value |
+|-------|-------|-------|
+| `January` | `Jan` | 1 |
+| `February` | `Feb` | 2 |
+| `March` | `Mar` | 3 |
+| `April` | `Apr` | 4 |
+| `May` | | 5 |
+| `June` | `Jun` | 6 |
+| `July` | `Jul` | 7 |
+| `August` | `Aug` | 8 |
+| `September` | `Sep` | 9 |
+| `October` | `Oct` | 10 |
+| `November` | `Nov` | 11 |
+| `December` | `Dec` | 12 |
 
 
 ## Date Constructors
@@ -101,7 +116,7 @@ Creates a datestamp for the first day of a week (Monday) for a given date.
 
 
 
-## Month Constructors
+## Month Helpers
 
 The following functions create datestamps within specific months. Each takes a day and year and returns a datestamp.
 E.g. `January 1 2025 -> 20088`
@@ -123,6 +138,13 @@ E.g. `January 1 2025 -> 20088`
   - `day`:  NUMBER (day of month)
   - `year`: NUMBER (4-digit year)
 - **Giveth**: NUMBER datestamp
+
+### `Month of the year`
+Gets the month number of a given date.
+- **Given**: 
+  - `date`: NUMBER datestamp or DATE object
+- **Giveth**: NUMBER (month number, e.g. 2 for February)
+
 
 
 ## Datestamp Math Helpers
@@ -214,9 +236,11 @@ Gets the weekday of January 1st from a DATE objects year.
 - **Giveth**: NUMBER (0-6)
 
 
+
+
 ## Week Functions
 
-### `Week`
+### `Week of the year`
 Gets the week of the year number for a given date.
 - **Given**: 
   - `date`: NUMBER datestamp or DATE object

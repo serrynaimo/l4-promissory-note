@@ -11,19 +11,31 @@
 §§ `Constants`
 
 
-`Months in a year` MEANS 12
-`Days in a year` MEANS 365.2425   -- Considering 4 year leap-cycle with 100 and 400 year exceptions
-`Days in a month` MEANS 30.436875 -- Average month
-`Days in a week` MEANS 7
+`Months in a year`      MEANS 12
+`Days in a year`        MEANS 365.2425   -- Considering 4 year leap-cycle with 100 and 400 year exceptions
+`Days in a month`       MEANS 30.436875  -- Average month
+`Days in a week`        MEANS 7
 
-`Monday` AKA `Mon` MEANS 1
-`Tuesday` AKA `Tue` MEANS 2
-`Wednesday` AKA `Wed` MEANS 3
-`Thursday` AKA `Thu` MEANS 4
-`Friday` AKA `Fri` MEANS 5
-`Saturday` AKA `Sat` MEANS 6
-`Sunday` AKA `Sun` MEANS 0
+`Monday`     AKA `Mon`  MEANS 1
+`Tuesday`    AKA `Tue`  MEANS 2
+`Wednesday`  AKA `Wed`  MEANS 3
+`Thursday`   AKA `Thu`  MEANS 4
+`Friday`     AKA `Fri`  MEANS 5
+`Saturday`   AKA `Sat`  MEANS 6
+`Sunday`     AKA `Sun`  MEANS 0
 
+`January`    AKA `Jan`  MEANS 1
+`February`   AKA `Feb`  MEANS 2
+`March`      AKA `Mar`  MEANS 3
+`April`      AKA `Apr`  MEANS 4
+`May`                   MEANS 5
+`June`       AKA `Jun`  MEANS 6
+`July`       AKA `Jul`  MEANS 7
+`August`     AKA `Aug`  MEANS 8
+`September`  AKA `Sep`  MEANS 9
+`October`    AKA `Oct`  MEANS 10
+`November`   AKA `Nov`  MEANS 11
+`December`   AKA `Dec`  MEANS 12
 
 
 
@@ -98,7 +110,7 @@ GIVETH A DATE
 GIVEN date  IS A DATE
 GIVETH A NUMBER
 `Day` AKA `Date to days` MEANS
-    Day (date's month) (date's year) (date's day)
+    Day (date's day) (date's month) (date's year) 
 
 GIVEN day   IS A NUMBER
       month IS A NUMBER
@@ -174,7 +186,7 @@ GIVETH A NUMBER
 
 
 
-§§ `Datestamp Month Constructors`
+§§ `Month Helpers`
 -- Convenience functions for months so you can write: January 1 1972
 
 GIVEN day   IS A NUMBER
@@ -248,6 +260,25 @@ GIVEN day   IS A NUMBER
 GIVETH A NUMBER
 `December` AKA `Dec` MEANS
     Day day 12 year
+
+GIVEN days  IS A NUMBER
+GIVETH A NUMBER
+`Month of the year` MEANS 
+    `Month of the year` (`Days to date` days)
+
+GIVEN date  IS A DATE
+GIVETH A NUMBER
+`Month of the year` MEANS                     -- Returns the number of the week of this date
+    `Month of days` 1 (`Months since year start to days` (date's month PLUS 1) (date's year))
+    WHERE
+        GIVEN i IS A NUMBER
+              c IS A NUMBER
+        `Month of days` MEANS
+            IF    i LESS THAN `Months in a year` AND a LESS THAN c
+            THEN  `Month of days` (i PLUS 1) c
+            ELSE  i
+            WHERE
+                a MEANS `Months since year start to days` (i PLUS 1) (date's year)
 
 
 
@@ -377,7 +408,6 @@ GIVEN date  IS A DATE
 GIVETH A NUMBER
 `Weekday of 1st day of year` MEANS
     `Weekday of 1st day of year` (date's year)
-
 
 
 
@@ -642,17 +672,17 @@ GIVETH A STRING
 GIVEN days  IS A NUMBER
 GIVETH A STRING
 `Name of month` MEANS
-    IF m EQUALS 0 THEN "January" ELSE
-        IF m EQUALS 1 THEN "February" ELSE
-            IF m EQUALS 2 THEN "March" ELSE
-                IF m EQUALS 3 THEN "April" ELSE
-                    IF m EQUALS 4 THEN "May" ELSE
-                        IF m EQUALS 5 THEN "June" ELSE
-                            IF m EQUALS 6 THEN "July" ELSE
-                                IF m EQUALS 7 THEN "August" ELSE
-                                    IF m EQUALS 8 THEN "September" ELSE
-                                        IF m EQUALS 9 THEN "October" ELSE
-                                            IF m EQUALS 10 THEN "November" ELSE
+    IF m EQUALS January THEN "January" ELSE
+        IF m EQUALS February THEN "February" ELSE
+            IF m EQUALS March THEN "March" ELSE
+                IF m EQUALS April THEN "April" ELSE
+                    IF m EQUALS May THEN "May" ELSE
+                        IF m EQUALS June THEN "June" ELSE
+                            IF m EQUALS July THEN "July" ELSE
+                                IF m EQUALS August THEN "August" ELSE
+                                    IF m EQUALS September THEN "September" ELSE
+                                        IF m EQUALS October THEN "October" ELSE
+                                            IF m EQUALS November THEN "November" ELSE
                                                 "December"
     WHERE
         d MEANS FLOOR days

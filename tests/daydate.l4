@@ -45,12 +45,14 @@ IMPORT daydate
 #EVAL `Weeks in year` 2009                                -- 53
 #EVAL `Weeks in year` 2028                                -- 52
 #EVAL `Weeks in year` 2032                                -- 53
+#EVAL `Month of the year` (Jun 15 2006) EQUALS June       -- TRUE        
 
 -- Object DATE testing
 #EVAL `Days to date` 738520                               -- DATE OF 1, 1, 2022
 #EVAL `Days to date` (January 1 2024)                     -- DATE OF 1, 1, 2024
 #EVAL `Days to date` 739249 EQUALS (DATE OF 31, 12, 2023) -- TRUE
 #EVAL `Days to date` (Nov 30 2019)                        -- DATE OF 30, 11, 2019
+#EVAL Day (Date 12 6 2025) EQUALS (Jun 12 2025)           -- TRUE
 #EVAL `is leap year` (Date 8 2 2020)                      -- TRUE
 #EVAL Day (DATE OF 18, 2, 2025) EQUALS Feb 18 2025        -- TRUE
 #EVAL `Weekday of` (DATE OF 14, 6, 2025) EQUALS Saturday  -- TRUE
