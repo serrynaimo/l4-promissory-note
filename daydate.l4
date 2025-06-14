@@ -34,6 +34,10 @@ DECLARE DATE
         month IS A NUMBER
         year  IS A NUMBER
 
+DECLARE yearCycleResponse   -- Internal type ... can remove later
+    HAS y IS A NUMBER
+        r IS A NUMBER
+
 
 
 
@@ -61,11 +65,38 @@ GIVETH A DATE
         year  IS  y
     WHERE
         d   MEANS FLOOR days PLUS `Years to days` 1970 PLUS 1
-        y   MEANS FLOOR (d DIVIDED BY `Days in a year`)
-        dy  MEANS FLOOR (y TIMES `Days in a year`)
-        m   MEANS FLOOR ((d MINUS dy) DIVIDED BY `Days in a month`) PLUS 1
+        y   MEANS `Year of days` days
+        dy  MEANS `Years to days` y
+        m   MEANS `Month of days` 1 (d MINUS dy)
         dm  MEANS `Months since year start to days` m y
 
+        GIVEN i IS A NUMBER
+              c IS A NUMBER
+        `Month of days` MEANS
+            IF    i LESS THAN `Months in a year` AND a LESS THAN c
+            THEN  `Month of days` (i PLUS 1) c
+            ELSE  i
+            WHERE
+                a MEANS `Months since year start to days` (i PLUS 1) y
+
+        GIVEN v IS A NUMBER
+        GIVETH A NUMBER
+        `Year of days` MEANS
+            cycle400's y PLUS cycle100's y PLUS cycle4's y PLUS z
+            WHERE
+                x         MEANS FLOOR v PLUS (`Years to days` 1970)
+                cycle400  MEANS cycle x 146097 400
+                cycle100  MEANS cycle (cycle400's r) 36524 100
+                cycle4    MEANS cycle (cycle100's r) 1461 4
+                z         MEANS FLOOR (cycle4's r DIVIDED BY 365)
+        
+        GIVEN v IS A NUMBER
+              p IS A NUMBER
+              c IS A NUMBER
+        GIVETH A yearCycleResponse
+        cycle MEANS
+            yearCycleResponse OF (FLOOR (v DIVIDED BY p) TIMES c), v MODULO p
+        
 
 
 
@@ -563,12 +594,12 @@ GIVETH A NUMBER
 §§ `Stringify for months and weekdays`
 
 
-GIVEN days  IS A NUMBER         -- Days since 1970 for a day
+GIVEN date  IS A DATE         -- Days since 1970 for a day
 GIVETH A STRING
 `Name of month` MEANS
-    `Name of month` (`Days to date` days)
+    `Name of month` (`Date to days` date)
 
-GIVEN date  IS A DATE
+GIVEN days  IS A NUMBER
 GIVETH A STRING
 `Name of month` MEANS
     IF m EQUALS 0 THEN "January" ELSE
@@ -584,7 +615,13 @@ GIVETH A STRING
                                             IF m EQUALS 10 THEN "November" ELSE
                                                 "December"
     WHERE
-        m MEANS FLOOR (date's month MINUS 1) MODULO `Months in a year`
+        d MEANS FLOOR days
+        m MEANS IF    d GREATER THAN 0 AND d LESS THAN 13
+                THEN  d MINUS 1
+                ELSE  FLOOR ((`Days to date` d)'s month MINUS 1) MODULO `Months in a year`
+
+#EVAL `Days to date` 1
+#EVAL `Name of month` 31
 
 GIVEN days   IS A NUMBER
 GIVETH A STRING
