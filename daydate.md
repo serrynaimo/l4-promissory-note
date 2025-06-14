@@ -6,6 +6,27 @@ A week begins on Monday
 Check the test/daydate.l4 file to see examples
 
 
+## Constants
+
+### Time Periods
+- `Months in a year`: 12
+- `Days in a year`: 365.2425 (accounts for 4-year leap cycle with 100 and 400 year exceptions)
+- `Days in a month`: 30.436875 (average month length)
+- `Days in a week`: 7
+
+### Weekday Constants
+Following ISO standard with January 1, 1970 being a Thursday:
+
+| Weekday | Alias | Value |
+|---------|-------|-------|
+| `Monday` | `Mon` | 4 |
+| `Tuesday` | `Tue` | 5 |
+| `Wednesday` | `Wed` | 6 |
+| `Thursday` | `Thu` | 0 |
+| `Friday` | `Fri` | 1 |
+| `Saturday` | `Sat` | 2 |
+| `Sunday` | `Sun` | 3 |
+
 
 ## Date Constructors
 
@@ -30,7 +51,7 @@ Converts datestamp into a DATE object.
 - **Giveth**: DATE object with day, month, and year properties
 
 
-## datestamp Constructors
+## Datestamp Constructors
 
 ### `Date to days`
 Converts a DATE object to datestamp.
