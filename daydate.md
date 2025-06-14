@@ -111,18 +111,18 @@ Gets the datestamp for the first day of a week.
 These functions create datestamps for specific months. Each takes a day and year and returns a datestamp.
 E.g. `January 1 2025 -> 20088`
 
-### `January` (AKA `Jan`)
-### `February` (AKA `Feb`)
-### `March` (AKA `Mar`)
-### `April` (AKA `Apr`)
-### `May`
-### `June` (AKA `Jun`)
-### `July` (AKA `Jul`)
-### `August` (AKA `Aug`)
-### `September` (AKA `Sep`)
-### `October` (AKA `Oct`)
-### `November` (AKA `Nov`)
-### `December` (AKA `Dec`)
+- `January` (AKA `Jan`)
+- `February` (AKA `Feb`)
+- `March` (AKA `Mar`)
+- `April` (AKA `Apr`)
+- `May`
+- `June` (AKA `Jun`)
+- `July` (AKA `Jul`)
+- `August` (AKA `Aug`)
+- `September` (AKA `Sep`)
+- `October` (AKA `Oct`)
+- `November` (AKA `Nov`)
+- `December` (AKA `Dec`)
 
 
 ## Datestamp Math Helpers
