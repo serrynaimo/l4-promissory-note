@@ -19,7 +19,7 @@
 `Monday` AKA `Mon` MEANS 1
 `Tuesday` AKA `Tue` MEANS 2
 `Wednesday` AKA `Wed` MEANS 3
-`Thursday` AKA `Thu` MEANS 4   -- ISO standard. 1st of Jan 1970 was a Thursday I guess
+`Thursday` AKA `Thu` MEANS 4
 `Friday` AKA `Fri` MEANS 5
 `Saturday` AKA `Sat` MEANS 6
 `Sunday` AKA `Sun` MEANS 0
