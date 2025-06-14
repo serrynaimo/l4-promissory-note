@@ -3,7 +3,7 @@
 Library with some basic functions to enable math with dates and days following ISO 8601.
 Functions return datestamps (Number of days since 1st January 1970).
 A week begins on Monday
-Check the test/daydate.l4 file to see examples
+Check the test/daydate.l4 file to see examples or play around with it in our [online-editor](https://jl4.legalese.com/?id=70d47963-10c2-4237-81e5-dd683c1ef08b).
 
 
 ## Constants
