@@ -12,16 +12,17 @@ IMPORT daydate
 #EVAL Year 2505                                           -- 195405
 #EVAL Month 1 2024                                        -- 19723
 #EVAL Month 6 2025                                        -- 20240
-#EVAL Month 19 2025 EQUALS Date 1 7 2026                  -- TRUE - Fun with month math
+#EVAL Month 19 2025 EQUALS Day 1 7 2026                   -- TRUE - Fun with month math
 #EVAL January 1 2024                                      -- 19723
 #EVAL Jun 13 2025                                         -- 20252
 #EVAL June 9 2025                                         -- 20248
 #EVAL Dec 31 2024                                         -- 20088
+#EVAL `Name of month` (Sep 1 2025)                        -- September
 #EVAL (Jan 1 2024) PLUS 366 EQUALS Year 2025              -- TRUE - Testing leap year 2024
 #EVAL (Jan 1 2023) PLUS 365 EQUALS Year 2024              -- TRUE
-#EVAL Dec 51 2024 EQUALS Date 20 1 2025                   -- TRUE
+#EVAL Dec 51 2024 EQUALS Day 20 1 2025                    -- TRUE
 #EVAL Month -13 2025 EQUALS Month 11 2023                 -- TRUE - Negative months (remember 0 is January - 1)
-#EVAL Year 2025 EQUALS Feb -30 2025                       -- TRUE
+#EVAL Year 2025 EQUALS Day -30 2 2025                     -- TRUE
 #EVAL `Days in month` 2 2024                              -- 29 - leap year
 #EVAL Week 1 2024                                         -- 19723 - 2024 started on a Monday
 #EVAL Week 1 2024 EQUALS January 1 2024                   -- TRUE
@@ -31,7 +32,12 @@ IMPORT daydate
 #EVAL `Weekday of` (Jun 13 2025) EQUALS Friday            -- TRUE
 #EVAL `Weekday of 1st day of year` 2024 EQUALS Monday     -- TRUE
 #EVAL `Weekday of 1st day of year` 2022 EQUALS Saturday   -- TRUE
+#EVAL `Name of weekday` (Year 2022)                       -- Saturday
+#EVAL `Name of weekday` (`Weekday of` (Date 12 6 2025))   -- Thursday
+#EVAL `Weekday of 1st day of year` 1970 EQUALS Thursday   -- TRUE
 #EVAL Week 24 2025 EQUALS June 9 2025                     -- TRUE
+#EVAL Week (Jun 9 2025)                                   -- 24
+#EVAL Week (Dec 30 2009)                                  -- 53
 #EVAL `Weekday of` (Week 8 2017) EQUALS Monday            -- TRUE
 #EVAL `is weekday` (June 8 2025)                          -- FALSE
 #EVAL `is weekend` (`Weekday of 1st day of month` 2 2025) -- TRUE
@@ -45,4 +51,18 @@ IMPORT daydate
 #EVAL `Weeks in year` 2009                                -- 53
 #EVAL `Weeks in year` 2028                                -- 52
 #EVAL `Weeks in year` 2032                                -- 53
-#EVAL `Days in a month`                                   -- 30.436875
+
+-- Object DATE testing
+#EVAL `Days to date` 19358                                -- DATE OF 1, 1, 2023
+#EVAL `Days to date` (January 1 2024)                     -- DATE OF 1, 1, 2024
+#EVAL `Days to date` 19722 EQUALS (DATE OF 31, 12, 2023)  -- TRUE
+#EVAL `Days to date` (Nov 30 2019)                        -- DATE OF 30, 11, 2019
+#EVAL `is leap year` (Date 8 2 2020)                      -- TRUE
+#EVAL Day (DATE OF 18, 2, 2025) EQUALS Feb 18 2025        -- TRUE
+#EVAL `Weekday of` (DATE OF 14, 6, 2025) EQUALS Saturday  -- TRUE
+
+-- Convenience phrases
+#EVAL `the month before` (Jan 2 2024) EQUALS Dec 1 2023   -- TRUE
+#EVAL `the month after` (Dec 8 2021) EQUALS Jan 1 2022    -- TRUE
+#EVAL `the day before` (DATE OF 1, 1, 2013)               -- 15705
+#EVAL `the later of` (Day 1 1 2004) (DATE OF 1, 12, 2003) -- 12418
