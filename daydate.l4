@@ -620,9 +620,6 @@ GIVETH A STRING
                 THEN  d MINUS 1
                 ELSE  FLOOR ((`Days to date` d)'s month MINUS 1) MODULO `Months in a year`
 
-#EVAL `Days to date` 1
-#EVAL `Name of month` 31
-
 GIVEN days   IS A NUMBER
 GIVETH A STRING
 `Name of weekday` MEANS
