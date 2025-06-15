@@ -37,7 +37,7 @@ IMPORT daydate
 #EVAL Day -31 1 2025 EQUALS Nov 30 2024                   -- TRUE - Large negative day
 #EVAL Day -365 1 2025 EQUALS Jan 1 2024                   -- TRUE - Full negative year
 #EVAL Day -366 1 2025 EQUALS Dec 31 2023                  -- TRUE - Full negative year (with leap)
-#EVAL Day 398 12 2023 EQUALS Jan 1 2025                   -- TRUE - Future day across leap year
+#EVAL Day 398 12 2027 EQUALS Jan 1 2029                   -- TRUE - Future day across leap year
 #EVAL Day 32 1 2025 EQUALS Feb 1 2025                     -- TRUE - Day overflow
 
 -- Week calculations
@@ -80,9 +80,11 @@ IMPORT daydate
 #EVAL Feb 28 2023 EQUALS `the day before` (Mar 1 2023)    -- TRUE - Last day of non-leap February
 #EVAL Feb 29 2024 EQUALS `the day before` (Mar 1 2024)    -- TRUE - Last day of leap February
 #EVAL `the month after` (Dec 15 2024) EQUALS Jan 1 2025   -- TRUE - Month after in December
+#EVAL Date (`on day` 2 (`the week after` (Jan 2 2026)))   -- DATE OF 6, 1, 2026
 #EVAL `the month before` (Jan 15 2025) EQUALS Dec 1 2024  -- TRUE - Month before in January
 #EVAL `the year after` (Dec 15 2024) EQUALS Jan 1 2025    -- TRUE - Year after in December
 #EVAL `the year before` (Jan 15 2025) EQUALS Jan 1 2024   -- TRUE - Year before calculation
+#EVAL `the week after` (DATE OF 15, 6, 2025) EQUALS Jun 16 2025
 
 -- Date comparison
 #EVAL `the earlier of` (Jan 1 2025) (Dec 31 2024)         -- 739615 - Earlier date comparison

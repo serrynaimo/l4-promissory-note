@@ -510,6 +510,18 @@ GIVETH A BOOLEAN
 §§ `Relative time phrases`
 
 
+GIVEN day   IS A NUMBER
+      days  IS A NUMBER
+GIVETH A NUMBER
+`on day` MEANS
+    days PLUS day MINUS 1
+
+GIVEN day   IS A NUMBER
+      date  IS A DATE
+GIVETH A NUMBER
+`on day` MEANS
+    `Date to days` date PLUS day MINUS 1
+
 GIVEN days   IS A NUMBER
 GIVETH A NUMBER
 `the day after` MEANS

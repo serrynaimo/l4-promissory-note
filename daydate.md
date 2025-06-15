@@ -290,6 +290,14 @@ Checks if a given date's year is a leap year.
 
 ## Relative Time Phrases
 
+### `on day`
+Gets the date for the nth day of a given date.
+e.g. ```#EVAL Date (`on day` 2 (`the week after` (Jan 2 2026))) -> DATE OF 6, 1, 2026```
+- **Given**:
+  - `day`: NUMBER (nth day, 1 being the same day)
+  - `date`: NUMBER datestamp or DATE object
+- **Giveth**: NUMBER datestamp
+
 ### `the day after`
 Gets the date for the day AFTER a given date.
 - **Given**: 
