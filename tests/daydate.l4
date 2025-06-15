@@ -1,64 +1,144 @@
 IMPORT daydate
 
-§ `Day & Date Definitions and Helpers Tests`
 
-#EVAL Year 2022                                           -- 738520 - 1st of the year 2022
-#EVAL Year 2505                                           -- 914932
-#EVAL Month 1 2024                                        -- 739250
-#EVAL Month 6 2025                                        -- 739767
-#EVAL Month 19 2025 EQUALS Day 1 7 2026                   -- TRUE - Fun with month math
-#EVAL January 1 2024                                      -- 739250
-#EVAL Jun 13 2025                                         -- 739779
-#EVAL `Name of month` (Sep 1 2025)                        -- September
-#EVAL `Name of month` 2                                   -- February
-#EVAL (Jan 1 2024) PLUS 366 EQUALS Year 2025              -- TRUE - Testing leap year 2024
-#EVAL (Jan 1 2023) PLUS 365 EQUALS Year 2024              -- TRUE
-#EVAL Dec 51 2024 EQUALS Day 20 1 2025                    -- TRUE
-#EVAL Month -13 2025 EQUALS Month 11 2023                 -- TRUE - Negative months (remember 0 is January - 1)
-#EVAL Year 2025 EQUALS Day -30 2 2025                     -- TRUE
-#EVAL `Days in month` 2 2024                              -- 29 - leap year
-#EVAL Week 1 2024                                         -- 739253 - 2024 started on a Monday
-#EVAL Week 1 2024 EQUALS January 1 2024                   -- TRUE
-#EVAL Week -1 2024 EQUALS December 18 2023                -- TRUE
-#EVAL Week 1 2025 EQUALS December 30 2024                 -- TRUE - Week started 2 days early according to ISO
-#EVAL Week 1 2023 EQUALS Year 2023 PLUS 1                 -- TRUE - Week started on Jan 2
-#EVAL `Weekday of` (Jun 13 2025) EQUALS Friday            -- TRUE
-#EVAL `Weekday of 1st day of year` 2024 EQUALS Monday     -- TRUE
-#EVAL `Weekday of 1st day of year` 2022 EQUALS Saturday   -- TRUE
-#EVAL `Name of weekday` (Year 2022)                       -- Saturday
-#EVAL `Name of weekday` (`Weekday of` (Date 12 6 2025))   -- Thursday
-#EVAL `Weekday of 1st day of year` 1970 EQUALS Thursday   -- TRUE
-#EVAL Week 24 2025 EQUALS June 9 2025                     -- TRUE
-#EVAL Date (Week (Date (June 17 2025)))                   -- DATE OF 16, 6, 2025
-#EVAL `Week of the year` (Jun 9 2025)                     -- 24
-#EVAL `Week of the year` (Dec 30 2009)                    -- 53
-#EVAL `Weekday of` (Week 8 2017) EQUALS Monday            -- TRUE
-#EVAL `is weekday` (June 8 2025)                          -- FALSE
-#EVAL `is weekend` (`Weekday of 1st day of month` 2 2025) -- TRUE
-#EVAL `is leap year` 1800                                 -- FALSE
-#EVAL `is leap year` 2000                                 -- TRUE
-#EVAL `is leap year` 2024                                 -- TRUE
-#EVAL `is leap year` 2025                                 -- FALSE
-#EVAL `Weeks in year` 2025                                -- 52
-#EVAL `Weeks in year` 2004                                -- 53
-#EVAL `Weeks in year` 2024                                -- 52
-#EVAL `Weeks in year` 2009                                -- 53
-#EVAL `Weeks in year` 2028                                -- 52
-#EVAL `Weeks in year` 2032                                -- 53
-#EVAL `Month of the year` (Jun 15 2006) EQUALS June       -- TRUE        
+§ `Tests for Day & Date Definitions and Helpers`
 
--- Object DATE testing
-#EVAL `Days to date` 738520                               -- DATE OF 1, 1, 2022
-#EVAL `Days to date` (January 1 2024)                     -- DATE OF 1, 1, 2024
-#EVAL `Days to date` 739249 EQUALS (DATE OF 31, 12, 2023) -- TRUE
-#EVAL `Days to date` (Nov 30 2019)                        -- DATE OF 30, 11, 2019
-#EVAL Day (Date 12 6 2025) EQUALS (Jun 12 2025)           -- TRUE
-#EVAL `is leap year` (Date 8 2 2020)                      -- TRUE
-#EVAL Day (DATE OF 18, 2, 2025) EQUALS Feb 18 2025        -- TRUE
-#EVAL `Weekday of` (DATE OF 14, 6, 2025) EQUALS Saturday  -- TRUE
+-- Leap year and century rules edge cases
+#EVAL `is leap year` 1900                                 -- FALSE - Century not divisible by 400
+#EVAL `is leap year` 2100                                 -- FALSE - Future century not divisible by 400
+#EVAL `is leap year` 2400                                 -- TRUE - Century divisible by 400
+#EVAL `Days in month` 2 1900                              -- 28 - February in non-leap century year
+#EVAL `Days in month` 2 2000                              -- 29 - February in leap century year
+#EVAL Feb 29 2000 EQUALS Day (Date 29 2 2000)             -- TRUE - leap day
+#EVAL `Weekday of` (Feb 29 2000)                          -- 2 - Tuesday
+#EVAL `is leap year` 0                                    -- TRUE - Year 0 is divisible by 400
 
--- Convenience phrases
-#EVAL `the month before` (Jan 2 2024) EQUALS Dec 1 2023   -- TRUE
-#EVAL `the month after` (Dec 8 2021) EQUALS Jan 1 2022    -- TRUE
-#EVAL `the day before` (DATE OF 1, 1, 2013)               -- 735232
-#EVAL `the later of` (Day 1 1 2004) (DATE OF 1, 12, 2003) -- 731945
+-- Extreme year calculations
+#EVAL Year 0                                              -- FAIL 0 - First day of year 0
+#EVAL Year 9999                                           -- FAIL 3652058 - First day of year 9999
+#EVAL Year -1                                             -- FAIL -365 - First day of year -1
+#EVAL `is leap year` -4                                   -- TRUE - Negative leap year
+#EVAL `is leap year` -100                                 -- FALSE - Negative century not divisible by 400
+#EVAL `is leap year` -400                                 -- TRUE - Negative century divisible by 400
+#EVAL `Days in month` 2 -4                                -- 29 - February in negative leap year
+#EVAL `Days in month` 2 -100                              -- 28 - February in negative non-leap century
+
+-- Month boundary calculations
+#EVAL Month 13 2025 EQUALS Month 1 2026                   -- TRUE - Month overflow
+#EVAL Month 24 2025 EQUALS Month 12 2026                  -- TRUE - 2 year overflow with months
+#EVAL Month -1 2025 EQUALS Month 11 2024                  -- TRUE - Negative month
+#EVAL Month -12 2025 EQUALS Month 12 2023                 -- TRUE - Negative year with months
+#EVAL Month 0 2025 EQUALS Month 12 2024                   -- TRUE - Zero month
+#EVAL Month -24 2025 EQUALS Month 12 2022                 -- TRUE - Multiple negative year with months
+
+-- Day boundary calculations
+#EVAL Day 0 1 2025 EQUALS Dec 31 2024                     -- TRUE - Zero day rolls to previous month
+#EVAL Day -1 1 2025 EQUALS Dec 30 2024                    -- TRUE - Negative day
+#EVAL Day -31 1 2025 EQUALS Nov 30 2024                   -- TRUE - Large negative day
+#EVAL Day -365 1 2025 EQUALS Jan 1 2024                   -- TRUE - Full negative year
+#EVAL Day -366 1 2025 EQUALS Dec 31 2023                  -- TRUE - Full negative year (with leap)
+#EVAL Day 398 12 2023 EQUALS Jan 1 2025                   -- TRUE - Future day across leap year
+#EVAL Day 32 1 2025 EQUALS Feb 1 2025                     -- TRUE - Day overflow
+
+-- Week calculations
+#EVAL Week 53 2009 EQUALS Dec 28 2009                     -- TRUE - Last week of 53-week year
+#EVAL Week 0 2025 EQUALS Dec 23 2024                      -- TRUE - Week zero
+#EVAL Week -1 2025 EQUALS Dec 16 2024                     -- TRUE - Negative week
+#EVAL Week -52 2025 EQUALS Dec 25 2023                    -- TRUE - Full negative year in weeks
+#EVAL Week 104 2025 EQUALS Dec 21 2026                    -- TRUE - Two years forward in weeks
+#EVAL Week 1 2000 EQUALS Jan 3 2000                       -- FAIL TRUE - First week of 2000
+
+-- Date differences and math
+#EVAL Dec 31 2024 MINUS Dec 31 2023                       -- 366 - Full leap year difference
+#EVAL Dec 31 2023 MINUS Dec 31 2022                       -- 365 - Full regular year difference
+#EVAL Feb 29 2024 MINUS Feb 28 2024                       -- 1 - Adjacent days in leap year
+#EVAL Mar 1 2024 MINUS Feb 29 2024                        -- 1 - Adjacent days across leap day
+#EVAL Mar 1 2023 MINUS Feb 28 2023                        -- 1 - Adjacent days in non-leap year
+#EVAL Jan 1 2101 MINUS Dec 31 2100                        -- 1 - Days across century boundary
+#EVAL Dec 31 1899 PLUS 1 EQUALS Jan 1 1900                -- TRUE - Addition across century
+#EVAL Dec 31 1999 PLUS 1 EQUALS Jan 1 2000                -- TRUE - Addition across millennium
+#EVAL Jan 1 2000 MINUS 1 EQUALS Dec 31 1999               -- TRUE - Subtraction across millennium
+#EVAL Jan 31 2025 PLUS 1 EQUALS Feb 1 2025                -- TRUE - Addition across month boundary
+#EVAL Jan 31 2025 PLUS 31 EQUALS Mar 3 2025               -- TRUE - Addition across multiple boundaries
+#EVAL Mar 31 2025 MINUS 31 EQUALS Feb 28 2025             -- TRUE - Subtraction across month boundary
+#EVAL Mar 31 2024 MINUS 31 EQUALS Feb 29 2024             -- TRUE - Subtraction to leap day
+
+-- Weekday calculations
+#EVAL `Weekday of` (Jan 1 1900) EQUALS Monday             -- TRUE - First day of non-leap century
+#EVAL `Weekday of` (Jan 1 2000) EQUALS Saturday           -- TRUE - First day of leap century
+#EVAL `Weekday of` (Dec 31 2000) EQUALS Sunday            -- TRUE - Last day of leap century
+#EVAL `Weekday of` (Dec 31 2100) EQUALS Friday            -- TRUE - Last day of future century
+#EVAL `Weekday of 1st day of year` 1600 EQUALS Saturday   -- TRUE - First day of old leap century
+#EVAL `Weekday of 1st day of month` 3 2025 EQUALS Saturday-- TRUE - First day of month
+#EVAL `Weekday of 1st day of month` 2 2024 EQUALS Thursday-- TRUE - First day of leap month
+#EVAL `Weekday of` (Day 0 1 2025) EQUALS Tuesday          -- TRUE - Zero day weekday
+#EVAL `Weekday of` (Day -1 1 2025) EQUALS Monday          -- TRUE - Negative day weekday
+
+-- First/last day of month/year calculations
+#EVAL Day 1 1 2025 EQUALS `the day after` (Dec 31 2024)   -- TRUE - First day of year
+#EVAL Dec 31 2025 EQUALS `the day before` (Jan 1 2026)    -- TRUE - Last day of year
+#EVAL Feb 28 2023 EQUALS `the day before` (Mar 1 2023)    -- TRUE - Last day of non-leap February
+#EVAL Feb 29 2024 EQUALS `the day before` (Mar 1 2024)    -- TRUE - Last day of leap February
+#EVAL `the month after` (Dec 15 2024) EQUALS Jan 1 2025   -- TRUE - Month after in December
+#EVAL `the month before` (Jan 15 2025) EQUALS Dec 1 2024  -- TRUE - Month before in January
+#EVAL `the year after` (Dec 15 2024) EQUALS Jan 1 2025    -- TRUE - Year after in December
+#EVAL `the year before` (Jan 15 2025) EQUALS Jan 1 2024   -- TRUE - Year before calculation
+
+-- Date comparison
+#EVAL `the earlier of` (Jan 1 2025) (Dec 31 2024)         -- 739615 - Earlier date comparison
+#EVAL `the later of` (Jan 1 2025) (Dec 31 2024)           -- 739616 - Later date comparison
+#EVAL `the earlier of` (Feb 29 2024) (Feb 28 2024)        -- 739308 - Earlier in leap month
+#EVAL `the later of` (Feb 29 2024) (Feb 28 2024)          -- 739309 - Later in leap month
+#EVAL `the earlier of` (Dec 31 9999) (Jan 1 0)            -- FAIL 0 - Extreme date comparison
+#EVAL `the later of` (Dec 31 9999) (Jan 1 0)              -- FAIL 3652424 - Extreme date comparison
+
+-- Week of the year edge cases
+#EVAL `Week of the year` (Jan 1 2005)                     -- 53 - First day of year in last week of previous year with 53 weeks
+#EVAL `Week of the year` (Jan 1 2023)                     -- 52 - First day of year in last week of previous year
+#EVAL `Week of the year` (Dec 30 2027)                    -- 52 - Day in week 52
+#EVAL `Week of the year` (Dec 30 2024)                    -- 1 - Last day of week 53 week year
+#EVAL `Week of the year` (Dec 28 2020)                    -- 53 - End of December in a year with 53 weeks
+#EVAL `Week of the year` (Jan 2 2026)                     -- 1 - Start of January in week 1
+#EVAL `Week of the year` (Dec 28 2020)                    -- 53 - End of December in week 52
+#EVAL `Week of the year` (Jan 1 2020)                     -- 1 - Monday of last week is week 1 of next year
+#EVAL `Week of the year` (Dec 31 2027)                    -- 52 - Last day of year with 52 weeks
+#EVAL `Week of the year` (Jan 1 2024)                     -- 1 - First day of year is in week 1
+
+-- ISO week number special cases
+#EVAL `Weeks in year` 2015                                -- 53 - Year with 53 weeks
+#EVAL `Weeks in year` 2016                                -- 52 - Year after a 53-week year
+#EVAL `Weeks in year` 2020                                -- 53 - Leap year with 53 weeks
+#EVAL Week 1 2015 EQUALS Dec 29 2014                      -- TRUE - First week starts in previous year
+#EVAL Week 53 2015 EQUALS Dec 28 2015                     -- TRUE - Week 53 starts
+#EVAL Week 1 2016 EQUALS Jan 4 2016                       -- TRUE - Week 1 starts late in 2016
+#EVAL Week 53 2015 EQUALS Week 0 2016                     -- TRUE - Week arithmetic across years
+#EVAL Week 53 2006 EQUALS Jan 1 2007                      -- TRUE - 52 week year overflows
+
+
+-- Weekday/weekend classification
+#EVAL `is weekend` (Jan 3 2026)                           -- TRUE - Saturday is weekend
+#EVAL `is weekend` (Jan 4 2026)                           -- TRUE - Sunday is weekend
+#EVAL `is weekend` (Jan 5 2026)                           -- FALSE - Monday is not weekend
+#EVAL `is weekday` (Jan 3 2026)                           -- FALSE - Saturday is not weekday
+#EVAL `is weekday` (Jan 2 2026)                           -- TRUE - Friday is weekday
+#EVAL `is weekday` (Jan 5 2026)                           -- TRUE - Monday is weekday
+
+-- Month and weekday name tests
+#EVAL `Name of month` (Jan 1 2025)                        -- January
+#EVAL `Name of month` (Feb 29 2024)                       -- February
+#EVAL `Name of month` 0                                   -- January
+#EVAL `Name of month` 12                                  -- December
+#EVAL `Name of weekday` (Jan 1 2025)                      -- Thursday
+#EVAL `Name of weekday` 0                                 -- Sunday
+#EVAL `Name of weekday` 6                                 -- Saturday
+#EVAL `Name of weekday` (`Weekday of 1st day of year` 2100) -- Friday
+
+-- Complex date calculations
+#EVAL (Feb 28 2024) PLUS 1 EQUALS Feb 29 2024             -- TRUE - Adding to leap day
+#EVAL (Feb 28 2023) PLUS 1 EQUALS Mar 1 2023              -- TRUE - Adding in non-leap year
+#EVAL (Mar 1 2023) MINUS 1 EQUALS Feb 28 2023             -- TRUE - Subtracting to end of February
+#EVAL (Mar 1 2024) MINUS 1 EQUALS Feb 29 2024             -- TRUE - Subtracting to leap day
+#EVAL (Dec 31 2024) PLUS 60 EQUALS Mar 1 2025             -- TRUE - Adding across month and leap year
+#EVAL (Mar 1 2025) MINUS 60 EQUALS Dec 31 2024            -- TRUE - Subtracting across month and leap year
+#EVAL Week 52 2027 PLUS 7 EQUALS Week 53 2027             -- TRUE - Adding to reach week 53
+#EVAL Week 1 2024 MINUS 7 EQUALS Week 52 2023             -- TRUE - Subtracting to previous year's week

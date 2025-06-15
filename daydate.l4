@@ -165,10 +165,13 @@ GIVEN week  IS A NUMBER
 GIVETH A NUMBER
 `Week` MEANS
     Year year
-        PLUS Monday MINUS (`Weekday of 1st day of year` year)
-            PLUS ((w MINUS 1) TIMES `Days in a week`)
+        PLUS (3 MINUS `Days in a week`) MINUS o
+            PLUS (w TIMES `Days in a week`)
     WHERE
         w MEANS FLOOR week
+        o MEANS (`Days in a week` PLUS 2
+            PLUS (`Weekday of 1st day of year` year))
+                MODULO `Days in a week`
 
 GIVEN days  IS A NUMBER
 GIVETH A NUMBER
@@ -422,12 +425,17 @@ GIVETH A NUMBER
 GIVEN date  IS A DATE
 GIVETH A NUMBER
 `Week of the year` MEANS                     -- Returns the number of the week of this date
-    CEILING ((s PLUS w) DIVIDED BY `Days in a week`)
+    IF    n EQUALS 53 AND `Weeks in year` (date's year) EQUALS 52
+    THEN  1
+    ELSE  IF    n EQUALS 0
+          THEN  `Weeks in year` (date's year MINUS 1)
+          ELSE  n
     WHERE
-        s    MEANS `Months since year start to days` date
-                PLUS (date's day MINUS 1)
-        w    MEANS (`Days in a week` PLUS Monday PLUS (`Weekday of 1st day of year` (date's year)))
-                MODULO `Days in a week`        
+        s MEANS (`Months since year start to days` date)
+            PLUS (date's day MINUS 1)
+        w MEANS (`Days in a week` PLUS 2 PLUS (`Weekday of 1st day of year` (date's year)))
+            MODULO `Days in a week`
+        n MEANS CEILING ((s PLUS w MINUS 2) DIVIDED BY `Days in a week`)
 
 GIVEN year  IS A NUMBER
 GIVETH A NUMBER
