@@ -680,17 +680,17 @@ GIVETH A STRING
 GIVEN days  IS A NUMBER
 GIVETH A STRING
 `Name of month` MEANS
-    IF m EQUALS January THEN "January" ELSE
-        IF m EQUALS February THEN "February" ELSE
-            IF m EQUALS March THEN "March" ELSE
-                IF m EQUALS April THEN "April" ELSE
-                    IF m EQUALS May THEN "May" ELSE
-                        IF m EQUALS June THEN "June" ELSE
-                            IF m EQUALS July THEN "July" ELSE
-                                IF m EQUALS August THEN "August" ELSE
-                                    IF m EQUALS September THEN "September" ELSE
-                                        IF m EQUALS October THEN "October" ELSE
-                                            IF m EQUALS November THEN "November" ELSE
+    IF m EQUALS 0 THEN "January" ELSE
+        IF m EQUALS 1 THEN "February" ELSE
+            IF m EQUALS 2 THEN "March" ELSE
+                IF m EQUALS 3 THEN "April" ELSE
+                    IF m EQUALS 4 THEN "May" ELSE
+                        IF m EQUALS 5 THEN "June" ELSE
+                            IF m EQUALS 6 THEN "July" ELSE
+                                IF m EQUALS 7 THEN "August" ELSE
+                                    IF m EQUALS 8 THEN "September" ELSE
+                                        IF m EQUALS 9 THEN "October" ELSE
+                                            IF m EQUALS 10 THEN "November" ELSE
                                                 "December"
     WHERE
         d MEANS FLOOR days
