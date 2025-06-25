@@ -23,8 +23,8 @@ IMPORT promissory_prelude
 
 `Default After Days Not Paid Beyond Due` MEANS 30
 
-`Late Payment Penalty` MEANS Penalty WITH                   -- Notice the importance of intendation below Penalty. Intendtation is important
-                                `Interest Rate`     IS 5%   -- in L4 to indicate that we're defining properties of Penalty.
+`Late Payment Penalty` MEANS Penalty WITH                   -- Notice the importance of intendation below Penalty. Intendation is important
+                                `Interest Rate`     IS 5%   -- in L4 to indicate that we're defining properties of the type Penalty.
                                 `Grace Period Days` IS 10
 
 `Governing Law` MEANS "The laws of The Republic of Singapore" -- Well, ideally this would be an IMPORT statement on the top of the file so
@@ -87,14 +87,14 @@ IMPORT promissory_prelude
         Currency  IS `Principal Amount`'s Currency
         Value     IS `Total Repayment Amount`'s Value MINUS `Principal Amount`'s Value
 
-GIVEN `Outstanding Payment Amount` IS A Money               -- This function implements the obligation for `The Borrower`.
-`Payment Obligations` MEANS
+GIVEN `Outstanding Payment Amount` IS A Money               
+`Payment Obligations` MEANS                                 -- This function implements the obligation for `The Borrower`.
     IF `Outstanding Payment Amount`'s Value GREATER THAN 0  -- As long as there is still money owed
         THEN  PARTY   `The Borrower`                        -- These keywords create the next obligations
               MUST    `pay monthly installment to`          -- This function/action is defined in the prelude and expects an object of type Lender and a Money
                           EXACTLY `The Lender`              -- The keyword EXACTLY sets the expectation that the payee must be `The Lender` object, not any other Lender
                           `Amount Transferred` PROVIDED     -- This is the alternative syntax to EXACTLY. It allows you to define your own conditional requirement
-                             `is money at least equal within error` -- This function is also defined in the prelude. It returns true or false to fulfill the condition.
+                             `is money at least equal within error` -- This function is also defined in the prelude. It returns true or false to fulfill the obligation.
                                 `Amount Transferred`
                                 (`Next Payment Due`'s Amount)
               WITHIN  `Next Payment Due Date`               -- WITHIN defines the timeframe in days as number. Without a good deadline, there is no obligation.
@@ -135,6 +135,7 @@ GIVEN `Outstanding Payment Amount` IS A Money               -- This function imp
                                          (`Outstanding Payment Amount`'s Value)
                 `Days Beyond Commencement` IS              -- Here we calculate the next due date based on how many installments worth have already been paid
                     (`Installments Covered Since Commencement` PLUS 1) TIMES `Days in a month` -- `Days in a month` is a convenience number from the daydate import. 30.4375
+
         `Next Payment Due Date` MEANS                      -- It's curious that the ACTUAL due date is the due date + grace period.
             CEILING (`Next Payment Due`'s `Days Beyond Commencement`) -- We round this up to not be too anal in the lenders favor
                 PLUS `Late Payment Penalty`'s `Grace Period Days`

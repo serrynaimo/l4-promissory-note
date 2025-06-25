@@ -11,7 +11,7 @@ IMPORT daydate
 #EVAL `Days in month` 2 2000                              -- 29 - February in leap century year
 #EVAL Feb 29 2000 EQUALS Day (Date 29 2 2000)             -- TRUE - leap day
 #EVAL `Weekday of` (Feb 29 2000)                          -- 2 - Tuesday
-#EVAL `is leap year` 0                                    -- TRUE - Year 0 is divisible by 400
+#EVAL `is leap year` 0   
 
 -- Extreme year calculations
 #EVAL Year 0                                              -- FAIL 0 - First day of year 0
@@ -53,7 +53,7 @@ IMPORT daydate
 #EVAL Dec 31 2023 MINUS Dec 31 2022                       -- 365 - Full regular year difference
 #EVAL Feb 29 2024 MINUS Feb 28 2024                       -- 1 - Adjacent days in leap year
 #EVAL Mar 1 2024 MINUS Feb 29 2024                        -- 1 - Adjacent days across leap day
-#EVAL Mar 1 2023 MINUS Feb 28 2023                        -- 1 - Adjacent days in non-leap year
+#EVAL March 1 2023 MINUS Feb 28 2023                      -- 1 - Adjacent days in non-leap year
 #EVAL Jan 1 2101 MINUS Dec 31 2100                        -- 1 - Days across century boundary
 #EVAL Dec 31 1899 PLUS 1 EQUALS Jan 1 1900                -- TRUE - Addition across century
 #EVAL Dec 31 1999 PLUS 1 EQUALS Jan 1 2000                -- TRUE - Addition across millennium
@@ -130,7 +130,7 @@ IMPORT daydate
 #EVAL `Name of month` (Feb 29 2024)                       -- February
 #EVAL `Name of month` 0                                   -- January
 #EVAL `Name of month` 12                                  -- December
-#EVAL `Name of weekday` (Jan 1 2025)                      -- Thursday
+#EVAL `Name of weekday` (Jan 1 2025)                      -- Wednesday
 #EVAL `Name of weekday` 0                                 -- Sunday
 #EVAL `Name of weekday` 6                                 -- Saturday
 #EVAL `Name of weekday` (`Weekday of 1st day of year` 2100) -- Friday
