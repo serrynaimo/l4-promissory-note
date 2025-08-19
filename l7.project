@@ -1,0 +1,78 @@
+# Legalese Project Configuration
+# This file contains metadata and configuration for a Legalese Suite L4 project
+
+name: "Promissory Note Example"
+version: "0.0.1"
+author: "Thomas Gorissen <mail@serrynaimo.com>"
+license: "MIT"
+description: "A debt contract example in L4 with parties and terms. I hope this contract helps to understand the capabilities of L4 better."
+repository: "https://github.com/serrynaimo/l4-promissory-note"
+tags: ["contract", "note", "financial", "promissory"]
+keywords: ["promissory note", "debt contract", "payment obligations"]
+
+# Project Files Organization
+files:
+  # Core definitions and data types
+  definitions:
+    - file: "def-promissory_note"
+  
+  # Reusable libraries and modules
+  libraries:
+    - file: "lib-money"
+  
+  # Helper functions and utilities
+  utilities:
+    - file: "util-helpers"
+  
+  # Test cases and validation
+  tests:
+    - file: "test-daydate"
+    - file: "test-promissory_note"
+  
+  # Regulative logic, permissions, obligations
+  rules:
+    - file: "promissory_note"
+      type: function
+      function:
+        name: "Payment Obligations"
+        description: "Returns the next payment obligations for the borrower, handling monthly installments, penalties, and defaults based on outstanding payment amount"
+        parameters:
+          type: object
+          properties:
+            Outstanding Payment Amount:
+              type: "object"
+              description: "The amount of money still owed by the borrower"
+              properties:
+                Currency:
+                  type: "string"
+                  description: "The currency code for the money amount (3-letter ISO)"
+                Value:
+                  type: "number"
+                  description: "The numerical value of the money amount"
+              required:
+                - "Currency"
+                - "Value"
+          required:
+            - "Outstanding Payment Amount"
+        supportedBackends:
+          - "jl4"
+
+# Dependencies
+dependencies:
+  core_libraries:
+    - "prelude"
+    - "daydate"
+  external: []
+
+# IDE Configuration (unsupported for now)
+# ide:
+  # auto_format: true
+  # syntax_highlighting: true
+  # error_checking: true
+  # auto_completion: true
+
+# Metadata
+metadata:
+  created: "2025-01-27"
+  last_modified: "2025-01-27"
+  last_deployed: "2025-08-18"

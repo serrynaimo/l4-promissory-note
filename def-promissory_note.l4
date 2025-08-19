@@ -1,0 +1,53 @@
+IMPORT `lib-money`
+
+§§ `Type Definitions`
+
+-- This file contains definitions and helper functions that are used in the note
+-- to help destructure more complex types and relationships or make the note
+-- use syntax that is more readable for humans.
+
+ASSUME NOTHING IS A STRING
+
+DECLARE Company
+    HAS `Name`              IS A STRING
+        `Address`           IS A STRING
+        `Jurisdiction`      IS A STRING
+        `Company Number`    IS A STRING
+        `Account`           IS A `Bank Account` -- Example of nested objects
+
+DECLARE `Natural Person`
+    HAS `Name`              IS A STRING
+        `Address`           IS A STRING
+        `Jurisdiction`      IS A STRING
+        `ID Number`         IS A STRING
+        `Account`           IS A `Bank Account`
+
+DECLARE Borrower IS ONE OF                  -- IS ONE OF can be useful to define types that are alike sometimes,
+   `Individual Borrower`                    -- but differ in some detailed terms later
+        HAS Individual      IS A `Natural Person`
+   `Commercial Borrower`
+        HAS Entity          IS A Company
+
+DECLARE Lender IS ONE OF
+   `Individual Lender`
+        HAS Individual      IS A `Natural Person`
+   `Commercial Lender`
+        HAS Entity          IS A Company
+
+DECLARE `Bank Account`
+    HAS `Bank Name`         IS A STRING
+        `Account Name`      IS A STRING
+        `Account Number`    IS A STRING
+        `SWIFT`             IS A STRING
+
+DECLARE Payment                              -- A payment in this note has an expected payment due date.
+    HAS Amount                       IS A Money
+        `Days Beyond Commencement`   IS A NUMBER
+
+DECLARE Penalty
+    HAS `Interest Rate`     IS A NUMBER
+        `Grace Period Days` IS A NUMBER
+
+DECLARE `pay monthly installment to`        -- It's useful to have variables that define actions as part of
+    HAS Recipient           IS A Lender     -- obligations to contain verbs and start lower case. It's not a
+        Amount              IS A Money      -- hard language requirement, but good practice.

@@ -1,0 +1,29 @@
+
+
+GIVEN a IS A Money                           -- Software comparisons are really hard. In reality a Lender would not really care
+      b IS A Money                           -- if a payment is a few cents short. This can even happen due to rounding errors
+`is money at least equal within error` MEANS -- and oddities in computer math alone.
+    a's Currency EQUALS b's Currency
+        AND a's Value AT LEAST (b's Value MINUS 0.05)
+
+GIVEN a IS A NUMBER                         -- This function just enables more readable writing of Money amounts. e.g. USD 2500
+USD MEANS                                   -- It looks much cleaner in the note and in the tests instead of always having to write
+   Money WITH                               -- Money WITH ...
+      Currency IS "USD"
+      Value    IS a
+
+GIVEN a IS A NUMBER
+EUR MEANS
+   Money WITH
+      Currency IS "EUR"
+      Value    IS a
+
+GIVEN a IS A NUMBER
+SGD MEANS
+   Money WITH
+      Currency IS "SGD"
+      Value    IS a
+
+DECLARE Money                               -- Defining a Money Type might actually only be helpful for multi-currency constracts.
+    HAS Currency            IS A STRING     -- In this case it is probably too much detail and it could've been solved easier by
+        Value               IS A NUMBER     -- just specifying a variable that declares all monetary amounts in this note to be USD

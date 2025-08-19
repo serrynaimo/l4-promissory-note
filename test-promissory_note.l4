@@ -2,9 +2,11 @@ IMPORT promissory_note
 
 § `Promissory Note Tests`
 
--- This file holds some evaluations against the promissory_note.l4
--- Technically these test don't need to be in a separate file, but putting them into the note file feels like scribbling onto your 
--- perfectly formatted, printed and signed note agreement to check how the terms actually work out... just a little wrong. :)
+{-
+    This file holds some evaluations against the promissory_note.l4
+    Technically these test don't need to be in a separate file, but putting them into the note file feels like scribbling onto your 
+    perfectly formatted, printed and signed note agreement to check how the terms actually work out... just a little wrong. :)
+-}
 
 
 #EVAL `Total Interest Amount` -- Hover the blue scribbled #EVAL to see what they return. This one should be [Money OF "USD", 2077.49370354708]
