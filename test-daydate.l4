@@ -9,7 +9,7 @@ IMPORT daydate
 #EVAL `is leap year` 2400                                 -- TRUE - Century divisible by 400
 #EVAL `Days in month` 2 1900                              -- 28 - February in non-leap century year
 #EVAL `Days in month` 2 2000                              -- 29 - February in leap century year
-#EVAL Feb 29 2000 EQUALS Day (Date 29 2 2000)             -- TRUE - leap day
+#EVAL Feb 29 2000 EQUALS Date 29 2 2000                  -- TRUE - leap day
 #EVAL `Weekday of` (Feb 29 2000)                          -- 2 - Tuesday
 #EVAL `is leap year` 0   
 
@@ -32,13 +32,13 @@ IMPORT daydate
 #EVAL Month -24 2025 EQUALS Month 12 2022                 -- TRUE - Multiple negative year with months
 
 -- Day boundary calculations
-#EVAL Day 0 1 2025 EQUALS Dec 31 2024                     -- TRUE - Zero day rolls to previous month
-#EVAL Day -1 1 2025 EQUALS Dec 30 2024                    -- TRUE - Negative day
-#EVAL Day -31 1 2025 EQUALS Nov 30 2024                   -- TRUE - Large negative day
-#EVAL Day -365 1 2025 EQUALS Jan 1 2024                   -- TRUE - Full negative year
-#EVAL Day -366 1 2025 EQUALS Dec 31 2023                  -- TRUE - Full negative year (with leap)
-#EVAL Day 398 12 2027 EQUALS Jan 1 2029                   -- TRUE - Future day across leap year
-#EVAL Day 32 1 2025 EQUALS Feb 1 2025                     -- TRUE - Day overflow
+#EVAL Day 0 1 2025 EQUALS Day (Dec 31 2024)               -- TRUE - Zero day rolls to previous month
+#EVAL Day -1 1 2025 EQUALS Day (Dec 30 2024)              -- TRUE - Negative day
+#EVAL Day -31 1 2025 EQUALS Day (Nov 30 2024)             -- TRUE - Large negative day
+#EVAL Day -365 1 2025 EQUALS Day (Jan 1 2024)             -- TRUE - Full negative year
+#EVAL Day -366 1 2025 EQUALS Day (Dec 31 2023)            -- TRUE - Full negative year (with leap)
+#EVAL Day 398 12 2027 EQUALS Day (Jan 1 2029)             -- TRUE - Future day across leap year
+#EVAL Day 32 1 2025 EQUALS Day (Feb 1 2025)               -- TRUE - Day overflow
 
 -- Week calculations
 #EVAL Week 53 2009 EQUALS Dec 28 2009                     -- TRUE - Last week of 53-week year
@@ -75,7 +75,7 @@ IMPORT daydate
 #EVAL `Weekday of` (Day -1 1 2025) EQUALS Monday          -- TRUE - Negative day weekday
 
 -- First/last day of month/year calculations
-#EVAL Day 1 1 2025 EQUALS `the day after` (Dec 31 2024)   -- TRUE - First day of year
+#EVAL Date 1 1 2025 EQUALS `the day after` (Dec 31 2024)   -- TRUE - First day of year
 #EVAL Dec 31 2025 EQUALS `the day before` (Jan 1 2026)    -- TRUE - Last day of year
 #EVAL Feb 28 2023 EQUALS `the day before` (Mar 1 2023)    -- TRUE - Last day of non-leap February
 #EVAL Feb 29 2024 EQUALS `the day before` (Mar 1 2024)    -- TRUE - Last day of leap February
